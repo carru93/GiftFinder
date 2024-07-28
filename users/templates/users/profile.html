@@ -1,0 +1,14 @@
+{% extends 'base.html' %} {% block title %} Profile - Gift Finder {% endblock %}
+{%block content %}
+<div>
+  <nav>
+    <ul>
+      <li><a href="{% url 'users:wishlist' %}">Wishlist</a></li>
+      <li><a href="{% url 'users:settings' %}">Settings</a></li>
+    </ul>
+  </nav>
+  <div class="profile-content">
+    {% block profile_content %}content profile{% endblock %}
+  </div>
+</div>
+{% endblock %}
