@@ -1,10 +1,11 @@
-{% extends 'base.html' %} {% block content %}
-<h1>Gifts</h1>
-<ul>
-  {% for gift in object_list %}
-  <li>{{ gift }}</li>
-  {% empty %}
-  <li>No gifts found.</li>
-  {% endfor %}
-</ul>
-{% endblock %}
+{% extends "base.html" %}
+{% block content %}
+    <h1>Gifts</h1>
+    <ul>
+        {% for gift in object_list %}
+            <li>{{ gift }}</li>
+        {% empty %}
+            <li>No gifts found.</li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

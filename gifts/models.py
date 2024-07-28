@@ -1,5 +1,6 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
+
 
 class Gift(models.Model):
     """
@@ -20,18 +21,21 @@ class Gift(models.Model):
     description = models.TextField()
     priceMin = models.DecimalField(max_digits=10, decimal_places=2)
     priceMax = models.DecimalField(max_digits=10, decimal_places=2)
-    giftCategories = models.ManyToManyField('GiftCategory', blank=True)
-    image = models.ImageField(upload_to='gifts/', blank=True, null=True)
-    suggestedBy = models.ForeignKey(settings.AUTH_USER_MODEL,
-                                    on_delete=models.CASCADE, null=True)
-    hobbies = models.ManyToManyField('hobbies.Hobby', blank=True)
+    giftCategories = models.ManyToManyField("GiftCategory", blank=True)
+    image = models.ImageField(upload_to="gifts/", blank=True, null=True)
+    suggestedBy = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True
+    )
+    hobbies = models.ManyToManyField("hobbies.Hobby", blank=True)
 
     def __str__(self):
         return str(self.name)
 
+
 class WishList(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     gifts = models.ManyToManyField(Gift)
+
 
 class GiftCategory(models.Model):
     name = models.CharField(max_length=100)

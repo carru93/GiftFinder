@@ -2,7 +2,8 @@ INPUT_CSS = static/src/input.css
 OUTPUT_CSS = static/src/output.css
 
 install:
-	pip install -r requirements.txt
+	pip install -r requirements.txt;\
+	pre-commit install
 
 test:
 	python -m unittest discover -v
@@ -17,6 +18,9 @@ clear-css:
 	rm $(OUTPUT_CSS)
 
 start-dev:
-	python3 manage.py runserver & make watch-css
+	trap 'kill 0' SIGINT; python3 manage.py runserver & make watch-css
 
-.PHONY: install test compile-css watch-css clear-css
+polish:
+	pre-commit run --all-files
+
+.PHONY: install test compile-css watch-css clear-css polish
