@@ -1,14 +1,21 @@
 {% extends "users/profile.html" %}
 {% block profile_content %}
-    <h2>Wishlist</h2>
-    <ul>
+    <div class="flex justify-between w-full">
+        <h1>Wishlist</h1>
+        <a href="{% url 'gifts:create' %}" class="btn btn-primary">Crea un nuovo regalo</a>
+    </div>
+    <ul class="mt-4">
         {% for gift in suggested_gifts %}
-            <li>
-                <strong>{{ gift }}</strong>
+            <li class="mb-4">
+                <div>
+                    <div>
+                        <strong>{{ gift.name }}</strong>
+                    </div>
+                    <span>{{ gift.description }}</span>
+                </div>
             </li>
         {% empty %}
             <li>Nessun regalo suggerito.</li>
         {% endfor %}
     </ul>
-    <a href="{% url 'gifts:create' %}" class="btn btn-primary">Crea un nuovo regalo</a>
 {% endblock profile_content %}
