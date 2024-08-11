@@ -16,6 +16,9 @@
         {% compress css %}
             <link rel="stylesheet" href="{% static 'src/output.css' %}" />
         {% endcompress %}
+        <style>{% block style %}
+            {%endblock style%}
+        </style>
     </head>
     <body>
         {% include "partials/topbar.html" %}
