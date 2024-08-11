@@ -163,3 +163,6 @@ static/admin
 
 # js
 node_modules/
+
+# local
+media/

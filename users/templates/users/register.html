@@ -1,3 +1,5 @@
+{% load compress %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -6,12 +8,70 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Register</title>
+        {% compress css %}
+            <link rel="stylesheet" href="{% static 'src/output.css' %}" />
+        {% endcompress %}
+        <style>
+            input {
+                width: 100%;
+                padding: 0.5rem;
+            }
+
+            .error-div {
+                color: var(--error-color);
+                font-size: 0.8rem;
+            }
+        </style>
     </head>
-    <body>
-        <h2>Register</h2>
-        <form method="post">
-            {% csrf_token %} {{ form.as_p }}
-            <button type="submit">Register</button>
-        </form>
+    <body class="flex justify-center items-center align-center h-screen">
+        <div class="py-8 px-24 bg-primary text-background rounded w-1/3">
+            <h2 class="text-xl mb-6">
+                Sign up or <a href="{% url 'users:login' %}" class="underline">Login</a>
+            </h2>
+            <form method="post" class="flex flex-col gap-4">
+                {% csrf_token %}
+                <div>
+                    <div>Username</div>
+                    <div class="error-div">{{ form.username.errors }}</div>
+                    <input type="text"
+                           name="username"
+                           autofocus=""
+                           autocapitalize="none"
+                           autocomplete="username"
+                           maxlength="150"
+                           required=""
+                           id="id_username">
+                </div>
+                <div>
+                    <div>Email</div>
+                    <div class="error-div">{{ form.email.errors }}</div>
+                    <input type="email"
+                           name="email"
+                           autocomplete="email"
+                           required=""
+                           id="id_email">
+                </div>
+                <div>
+                    <div>Password</div>
+                    <div class="error-div">{{ form.password1.errors }}</div>
+                    <input type="password"
+                           name="password1"
+                           autocomplete="new-password"
+                           required=""
+                           id="id_password1">
+                </div>
+                <div>
+                    <div>Confirm password</div>
+                    <div class="error-div">{{ form.password2.errors }}</div>
+                    <input type="password"
+                           name="password2"
+                           autocomplete="new-password"
+                           required=""
+                           id="id_password2">
+                </div>
+                <div class="error-div">{{ form.non_field_errors }}</div>
+                <button type="submit" class="bg-background text-primary p-2 rounded-sm">Register</button>
+            </form>
+        </div>
     </body>
 </html>

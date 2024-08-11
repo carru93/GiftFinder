@@ -7,6 +7,7 @@
     --primary-color-light: #F6D852;
     --background-color: #2D3B41;
     --secondary-color: #FB6A75;
+    --error-color: var(--secondary-color);
     --third-color: #00C7B7;
 }
 

@@ -1,11 +1,26 @@
+from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 
 from gifts.models import Gift
 
 from .forms import UserCreationForm
+
+
+class Login(LoginView):
+    template_name = "users/login.html"
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(
+            self.request, "Login failed. Please check your username and password."
+        )
+        return self.render_to_response(self.get_context_data(form=form))
 
 
 def register(request):
