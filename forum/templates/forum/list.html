@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="w-full items-center px-12">
+        <div class="flex justify-between w-full">
+            <h1>Forum</h1>
+            <a href="{% url 'forum:create' %}" class="btn btn-primary">Crea un nuovo post</a>
+        </div>
+        <ul>
+            {% for post in object_list %}
+                <li>
+                    <div class="card"
+                         onclick='location.href="{% url 'forum:post_detail' post.id %}";'>
+                        <div class="card-title">{{ post.title }}</div>
+                        <div class="card-content">{{ post.content|truncatechars:100 }}</div>
+                    </div>
+                </li>
+            {% empty %}
+                <li>No post found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock content %}

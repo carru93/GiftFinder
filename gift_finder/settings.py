@@ -63,6 +63,7 @@ TEMPLATES = [
         "DIRS": [
             BASE_DIR / "pages/templates/pages",
             BASE_DIR / "gifts/templates/gifts",
+            BASE_DIR / "forum/templates/forum",
         ],
         "APP_DIRS": True,
         "OPTIONS": {

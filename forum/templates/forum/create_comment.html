@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block style %}
+    {{ block.super }}
+    input {
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 0.25rem;
+    height: 30px;
+    color: var(--background-color);
+    }
+    input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
+    outline: none;
+    }
+    select {
+    font-size: 16px;
+    padding: 5px;
+    border-radius: 0.25rem;
+    background-color: #fff;
+    height: 30px;
+    color: var(--background-color);
+    }
+{% endblock style %}
+{% block content %}
+    <div class="w-full items-center px-12">
+        <h1>Add comment</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Comment</button>
+        </form>
+    </div>
+{% endblock content %}

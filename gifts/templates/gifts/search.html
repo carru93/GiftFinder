@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block style %}
+    {{ block.super }}
+    input {
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 0.25rem;
+    height: 30px;
+    color: var(--background-color);
+    }
+    input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
+    outline: none;
+    }
+    select {
+    font-size: 16px;
+    padding: 5px;
+    border-radius: 0.25rem;
+    background-color: #fff;
+    height: 30px;
+    color: var(--background-color);
+    }
+{% endblock style %}
+{% block content %}
+    <div class="flex justify-center flex-col w-full items-center px-12 ">
+        <div class="card w-full mt-8 mb-16">
+            <div class="card-title">Search for Gifts</div>
+            <form method="get" class="flex p-4 justify-between">
+                <div class="flex justify-around w-full">{{ form.as_p }}</div>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <div class="gift-list">
+            {% for gift in gifts %}
+                <div class="gift-item">
+                    <div class="gift-item-header">
+                        <div class="flex gap-4">
+                            {% if gift.image %}
+                                <img src="{{ gift.image.url }}"
+                                     alt="{{ gift.name }}"
+                                     class="gift-item-image"
+                                     height="75"
+                                     width="75" />
+                            {% else %}
+                                <img src="https://via.placeholder.com/75"
+                                     alt="Default Image"
+                                     class="gift-item-image"
+                                     height="75"
+                                     width="75" />
+                            {% endif %}
+                            <div class="gift-item-title">{{ gift.name }}</div>
+                        </div>
+                        <div>${{ gift.priceMin }} - ${{ gift.priceMax }}</div>
+                    </div>
+                    <div class="gift-item-description">{{ gift.description }}</div>
+                    <div>
+                        {% for category in gift.giftCategories.all %}
+                            {{ category.name }}
+                            {% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% empty %}
+                <p>No gifts found matching your criteria.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

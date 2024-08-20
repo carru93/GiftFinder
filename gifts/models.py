@@ -40,5 +40,8 @@ class WishList(models.Model):
 class GiftCategory(models.Model):
     name = models.CharField(max_length=100)
 
+    class Meta:
+        verbose_name_plural = "gift categories"
+
     def __str__(self):
         return str(self.name)

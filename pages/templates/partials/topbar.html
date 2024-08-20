@@ -2,8 +2,9 @@
 <nav class="flex justify-between text-background bg-primary py-5 px-2 h-[75px] shadow">
     <div class="flex flex-1 items-center">
         <a href="{% url 'home' %}" class="px-2">Home</a>
+        <a href="{% url 'gifts:search' %}" class="px-2">Search</a>
         <a href="{% url 'users:profile' %}" class="px-2">Profile</a>
-        <a href="{% url 'gifts:list' %}" class="px-2">Forum</a>
+        <a href="{% url 'forum:list' %}" class="px-2">Forum</a>
     </div>
     <div class="flex flex-1 justify-center">
         <img src="{% static 'src/img/logo/negative-text-logo.svg' %}"
@@ -12,11 +13,6 @@
              height=""
              width="" />
     </div>
-    {% comment %}
-  <li><a href="{% url 'users:profile' %}">Profile</a></li>
-  <li><a href="{% url 'forum:thread_list' %}">Forum</a></li>
-  <li><a href="{% url 'hobbies:hobby_list' %}">Hobbies</a></li>
-    {% endcomment %}
     <div class="flex flex-1 justify-end items-center">
         {% if user.is_authenticated %}
             {% if user.is_superuser %}
