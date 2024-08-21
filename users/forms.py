@@ -24,4 +24,11 @@ class UserCreationForm(CreationForm):
 class UserChangeForm(ChangeForm):
     class Meta:
         model = User
-        fields = ("username", "email", "bio", "birth_date")
+        fields = (
+            "username",
+            "email",
+            "bio",
+            "birth_date",
+            "public_wishlist",
+            "hobbies",
+        )

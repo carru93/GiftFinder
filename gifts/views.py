@@ -19,7 +19,9 @@ class GiftCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.suggestedBy = self.request.user
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        form.instance.hobbies.set(self.request.user.hobbies.all())
+        return response
 
 
 class SearchGiftView(ListView):

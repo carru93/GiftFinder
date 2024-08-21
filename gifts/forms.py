@@ -13,7 +13,6 @@ class GiftForm(forms.ModelForm):
             "priceMax",
             "giftCategories",
             "image",
-            "hobbies",
         ]
 
 

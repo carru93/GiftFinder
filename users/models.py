@@ -8,18 +8,20 @@ class User(AbstractUser):
     birth_date = models.DateField(null=True, blank=True)
     groups = models.ManyToManyField(
         "auth.Group",
-        related_name="customuser_set",  # Aggiungi related_name per evitare conflitti
+        related_name="customuser_set",
         blank=True,
         help_text="The groups this user belongs to.",
         verbose_name="groups",
     )
     user_permissions = models.ManyToManyField(
         "auth.Permission",
-        related_name="customuser_set",  # Aggiungi related_name per evitare conflitti
+        related_name="customuser_set",
         blank=True,
         help_text="Specific permissions for this user.",
         verbose_name="user permissions",
     )
+    public_wishlist = models.BooleanField(default=False)
+    hobbies = models.ManyToManyField("hobbies.Hobby", related_name="users", blank=True)
 
     def __str__(self):
         return str(self.username)

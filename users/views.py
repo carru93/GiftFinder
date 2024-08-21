@@ -3,11 +3,13 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect, render
-from django.views.generic import TemplateView
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, UpdateView
 
 from gifts.models import Gift
 
-from .forms import UserCreationForm
+from .forms import UserChangeForm, UserCreationForm
+from .models import User
 
 
 class Login(LoginView):
@@ -44,10 +46,6 @@ class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = "users/profile.html"
 
 
-class SettingsView(LoginRequiredMixin, TemplateView):
-    template_name = "users/settings.html"
-
-
 class WishListView(LoginRequiredMixin, TemplateView):
     template_name = "users/wishlist.html"
 
@@ -55,3 +53,13 @@ class WishListView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context["suggested_gifts"] = Gift.objects.filter(suggestedBy=self.request.user)
         return context
+
+
+class UserUpdateView(UpdateView):
+    model = User
+    form_class = UserChangeForm
+    template_name = "users/settings.html"
+    success_url = reverse_lazy("users:profile")
+
+    def get_object(self, queryset=None):
+        return self.request.user
