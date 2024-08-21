@@ -1,0 +1,134 @@
+[
+  { "model": "hobbies.hobby", "fields": { "name": "Reading" }, "pk": 1 },
+  { "model": "hobbies.hobby", "fields": { "name": "Writing" }, "pk": 2 },
+  { "model": "hobbies.hobby", "fields": { "name": "Drawing" }, "pk": 3 },
+  { "model": "hobbies.hobby", "fields": { "name": "Painting" }, "pk": 4 },
+  { "model": "hobbies.hobby", "fields": { "name": "Photography" }, "pk": 5 },
+  { "model": "hobbies.hobby", "fields": { "name": "Gardening" }, "pk": 6 },
+  { "model": "hobbies.hobby", "fields": { "name": "Cooking" }, "pk": 7 },
+  { "model": "hobbies.hobby", "fields": { "name": "Baking" }, "pk": 8 },
+  { "model": "hobbies.hobby", "fields": { "name": "Traveling" }, "pk": 9 },
+  { "model": "hobbies.hobby", "fields": { "name": "Hiking" }, "pk": 10 },
+  { "model": "hobbies.hobby", "fields": { "name": "Running" }, "pk": 11 },
+  { "model": "hobbies.hobby", "fields": { "name": "Cycling" }, "pk": 12 },
+  { "model": "hobbies.hobby", "fields": { "name": "Swimming" }, "pk": 13 },
+  { "model": "hobbies.hobby", "fields": { "name": "Yoga" }, "pk": 14 },
+  { "model": "hobbies.hobby", "fields": { "name": "Meditation" }, "pk": 15 },
+  { "model": "hobbies.hobby", "fields": { "name": "Knitting" }, "pk": 16 },
+  { "model": "hobbies.hobby", "fields": { "name": "Sewing" }, "pk": 17 },
+  { "model": "hobbies.hobby", "fields": { "name": "Crafting" }, "pk": 18 },
+  { "model": "hobbies.hobby", "fields": { "name": "Woodworking" }, "pk": 19 },
+  {
+    "model": "hobbies.hobby",
+    "fields": { "name": "Playing Musical Instruments" },
+    "pk": 20
+  },
+  { "model": "hobbies.hobby", "fields": { "name": "Singing" }, "pk": 21 },
+  { "model": "hobbies.hobby", "fields": { "name": "Dancing" }, "pk": 22 },
+  { "model": "hobbies.hobby", "fields": { "name": "Fishing" }, "pk": 23 },
+  { "model": "hobbies.hobby", "fields": { "name": "Bird Watching" }, "pk": 24 },
+  {
+    "model": "hobbies.hobby",
+    "fields": { "name": "Playing Video Games" },
+    "pk": 25
+  },
+  {
+    "model": "hobbies.hobby",
+    "fields": { "name": "Watching Movies" },
+    "pk": 26
+  },
+  {
+    "model": "hobbies.hobby",
+    "fields": { "name": "Collecting (stamps, coins, etc.)" },
+    "pk": 27
+  },
+  { "model": "hobbies.hobby", "fields": { "name": "Chess" }, "pk": 28 },
+  {
+    "model": "hobbies.hobby",
+    "fields": { "name": "Playing Board Games" },
+    "pk": 29
+  },
+  { "model": "hobbies.hobby", "fields": { "name": "Camping" }, "pk": 30 },
+  { "model": "hobbies.hobby", "fields": { "name": "Surfing" }, "pk": 31 },
+  { "model": "hobbies.hobby", "fields": { "name": "Skiing" }, "pk": 32 },
+  { "model": "hobbies.hobby", "fields": { "name": "Snowboarding" }, "pk": 33 },
+  { "model": "hobbies.hobby", "fields": { "name": "Scuba Diving" }, "pk": 34 },
+  { "model": "hobbies.hobby", "fields": { "name": "Rock Climbing" }, "pk": 35 },
+  { "model": "hobbies.hobby", "fields": { "name": "Martial Arts" }, "pk": 36 },
+  {
+    "model": "hobbies.hobby",
+    "fields": { "name": "Fitness Training" },
+    "pk": 37
+  },
+  { "model": "hobbies.hobby", "fields": { "name": "Archery" }, "pk": 38 },
+  { "model": "hobbies.hobby", "fields": { "name": "Astrology" }, "pk": 39 },
+  {
+    "model": "hobbies.hobby",
+    "fields": { "name": "Model Building" },
+    "pk": 40
+  },
+  {
+    "model": "hobbies.hobby",
+    "fields": { "name": "Car Restoration" },
+    "pk": 41
+  },
+  { "model": "hobbies.hobby", "fields": { "name": "Volunteering" }, "pk": 42 },
+  { "model": "hobbies.hobby", "fields": { "name": "Origami" }, "pk": 43 },
+  { "model": "hobbies.hobby", "fields": { "name": "Candle Making" }, "pk": 44 },
+  { "model": "hobbies.hobby", "fields": { "name": "Pottery" }, "pk": 45 },
+  {
+    "model": "hobbies.hobby",
+    "fields": { "name": "Leatherworking" },
+    "pk": 46
+  },
+  { "model": "hobbies.hobby", "fields": { "name": "Calligraphy" }, "pk": 47 },
+  { "model": "hobbies.hobby", "fields": { "name": "Home Brewing" }, "pk": 48 },
+  { "model": "hobbies.hobby", "fields": { "name": "Genealogy" }, "pk": 49 },
+  { "model": "hobbies.hobby", "fields": { "name": "Magic Tricks" }, "pk": 50 },
+  { "model": "hobbies.hobby", "fields": { "name": "Astronomy" }, "pk": 51 },
+  { "model": "hobbies.hobby", "fields": { "name": "Beekeeping" }, "pk": 52 },
+  { "model": "hobbies.hobby", "fields": { "name": "Metalworking" }, "pk": 53 },
+  { "model": "hobbies.hobby", "fields": { "name": "Geocaching" }, "pk": 54 },
+  {
+    "model": "hobbies.hobby",
+    "fields": { "name": "Surfing the Internet" },
+    "pk": 55
+  },
+  { "model": "hobbies.hobby", "fields": { "name": "Blogging" }, "pk": 56 },
+  { "model": "hobbies.hobby", "fields": { "name": "Vlogging" }, "pk": 57 },
+  { "model": "hobbies.hobby", "fields": { "name": "Podcasting" }, "pk": 58 },
+  { "model": "hobbies.hobby", "fields": { "name": "Skateboarding" }, "pk": 59 },
+  { "model": "hobbies.hobby", "fields": { "name": "Rollerblading" }, "pk": 60 },
+  { "model": "hobbies.hobby", "fields": { "name": "Ice Skating" }, "pk": 61 },
+  {
+    "model": "hobbies.hobby",
+    "fields": { "name": "Horseback Riding" },
+    "pk": 62
+  },
+  { "model": "hobbies.hobby", "fields": { "name": "Foraging" }, "pk": 63 },
+  {
+    "model": "hobbies.hobby",
+    "fields": { "name": "Urban Exploration" },
+    "pk": 64
+  },
+  {
+    "model": "hobbies.hobby",
+    "fields": { "name": "Fossil Hunting" },
+    "pk": 65
+  },
+  { "model": "hobbies.hobby", "fields": { "name": "Gemology" }, "pk": 66 },
+  { "model": "hobbies.hobby", "fields": { "name": "Car Detailing" }, "pk": 67 },
+  {
+    "model": "hobbies.hobby",
+    "fields": { "name": "Home Improvement" },
+    "pk": 68
+  },
+  { "model": "hobbies.hobby", "fields": { "name": "DIY Projects" }, "pk": 69 },
+  { "model": "hobbies.hobby", "fields": { "name": "Gaming" }, "pk": 70 },
+  { "model": "hobbies.hobby", "fields": { "name": "Craft" }, "pk": 71 },
+  {
+    "model": "hobbies.hobby",
+    "fields": { "name": "Bonsai Cultivation" },
+    "pk": 72
+  }
+]

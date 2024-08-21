@@ -23,4 +23,9 @@ start-dev:
 polish:
 	pre-commit run --all-files
 
-.PHONY: install test compile-css watch-css clear-css polish
+init-db:
+	python3 manage.py migrate;\
+	python3 manage.py loaddata giftcategories;\
+	python3 manage.py loaddata hobbies;\
+
+.PHONY: install test compile-css watch-css clear-css polish start-dev init-db

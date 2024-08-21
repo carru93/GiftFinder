@@ -1,0 +1,187 @@
+[
+  {
+    "model": "gifts.giftcategory",
+    "pk": 1,
+    "fields": { "name": "Birthday" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 2,
+    "fields": { "name": "Wedding" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 3,
+    "fields": { "name": "Anniversary" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 4,
+    "fields": { "name": "Christmas" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 5,
+    "fields": { "name": "Valentine's Day" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 6,
+    "fields": { "name": "Graduation" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 7,
+    "fields": { "name": "Baptism" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 8,
+    "fields": { "name": "Baby Shower" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 9,
+    "fields": { "name": "Housewarming" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 10,
+    "fields": { "name": "Mother's Day" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 11,
+    "fields": { "name": "Father's Day" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 12,
+    "fields": { "name": "Engagement" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 13,
+    "fields": { "name": "Retirement" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 14,
+    "fields": { "name": "New Year" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 15,
+    "fields": { "name": "Easter" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 16,
+    "fields": { "name": "Thanksgiving" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 17,
+    "fields": { "name": "Promotion" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 18,
+    "fields": { "name": "Get Well Soon" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 19,
+    "fields": { "name": "Friendship Day" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 20,
+    "fields": { "name": "Hanukkah" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 21,
+    "fields": { "name": "Bar/Bat Mitzvah" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 22,
+    "fields": { "name": "Diwali" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 23,
+    "fields": { "name": "Christening" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 24,
+    "fields": { "name": "First Communion" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 25,
+    "fields": { "name": "Thank You" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 26,
+    "fields": { "name": "Apology" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 27,
+    "fields": { "name": "Farewell" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 28,
+    "fields": { "name": "Congratulations" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 29,
+    "fields": { "name": "Sympathy" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 30,
+    "fields": { "name": "Good Luck" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 31,
+    "fields": { "name": "Just Because" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 32,
+    "fields": { "name": "Bridal Shower" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 33,
+    "fields": { "name": "Halloween" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 34,
+    "fields": { "name": "Teacher Appreciation" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 35,
+    "fields": { "name": "Welcome Back" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 36,
+    "fields": { "name": "Religious Holiday" }
+  },
+  {
+    "model": "gifts.giftcategory",
+    "pk": 37,
+    "fields": { "name": "Corporate Gift" }
+  }
+]
