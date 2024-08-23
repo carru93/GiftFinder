@@ -1,0 +1,27 @@
+{% extends "users/profile.html" %}
+{% block profile_content %}
+    <div class="flex justify-between w-full">
+        <h1>Serarch friends</h1>
+        <form method="get">
+            <input type="text"
+                   name="filter"
+                   placeholder="Search users by name"
+                   value="{{ request.GET.filter }}">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <ul class="mt-4">
+        {% for user in users %}
+            <li class="mb-4">
+                <div class="card"
+                     onclick='location.href="{% url 'users:user' user.id %}";'>
+                    <div>
+                        <strong>{{ user }}</strong>
+                    </div>
+                </div>
+            </li>
+        {% empty %}
+            <li>There are no other users at the moment.</li>
+        {% endfor %}
+    </ul>
+{% endblock profile_content %}

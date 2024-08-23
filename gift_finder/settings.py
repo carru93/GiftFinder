@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "compressor",
+    "crispy_forms",
+    "crispy_tailwind",
     "users",
     "hobbies",
     "gifts",
@@ -152,3 +154,7 @@ STATICFILES_FINDERS = (
     "compressor.finders.CompressorFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 )
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+
+CRISPY_TEMPLATE_PACK = "tailwind"

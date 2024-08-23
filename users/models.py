@@ -22,6 +22,7 @@ class User(AbstractUser):
     )
     public_wishlist = models.BooleanField(default=False)
     hobbies = models.ManyToManyField("hobbies.Hobby", related_name="users", blank=True)
+    friends = models.ManyToManyField("self", blank=True)
 
     def __str__(self):
         return str(self.username)

@@ -32,3 +32,9 @@ class UserChangeForm(ChangeForm):
             "public_wishlist",
             "hobbies",
         )
+
+
+class UserSearchForm(forms.Form):
+    class Meta:
+        model = User
+        fields = ("username",)

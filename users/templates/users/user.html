@@ -1,11 +1,18 @@
 {% extends "users/profile.html" %}
 {% block profile_content %}
     <div class="flex justify-between w-full">
-        <h1>Wishlist</h1>
-        <a href="{% url 'gifts:create' %}" class="btn btn-primary">Crea un nuovo regalo</a>
+        <h1>{{ target }}</h1>
+        <form method="post" action="{% url 'users:toggle_follow_user' target.id %}">
+            {% csrf_token %}
+            {% if is_friend %}
+                <button type="submit" class="btn btn-danger">Unfollow</button>
+            {% else %}
+                <button type="submit" class="btn btn-primary">Follow</button>
+            {% endif %}
+        </form>
     </div>
     <ul class="mt-4">
-        {% for gift in suggested_gifts %}
+        {% for gift in wished_gifts %}
             <li class="mb-4">
                 <div>
                     <div>
