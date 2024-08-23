@@ -7,7 +7,8 @@
     <ul class="mt-4">
         {% for friend in friends %}
             <li class="mb-4">
-                <div>
+                <div class="card"
+                     onclick='location.href="{% url 'users:user' friend.id %}";'>
                     <div>
                         <strong>{{ friend }}</strong>
                     </div>

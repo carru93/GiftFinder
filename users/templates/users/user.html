@@ -11,18 +11,20 @@
             {% endif %}
         </form>
     </div>
-    <ul class="mt-4">
-        {% for gift in wished_gifts %}
-            <li class="mb-4">
-                <div>
+    {% if target.public_wishlist %}
+        <ul class="mt-4">
+            {% for gift in wished_gifts %}
+                <li class="mb-4">
                     <div>
-                        <strong>{{ gift.name }}</strong>
+                        <div>
+                            <strong>{{ gift.name }}</strong>
+                        </div>
+                        <span>{{ gift.description }}</span>
                     </div>
-                    <span>{{ gift.description }}</span>
-                </div>
-            </li>
-        {% empty %}
-            <li>No gift wished yet.</li>
-        {% endfor %}
-    </ul>
+                </li>
+            {% empty %}
+                <li>No gift wished yet.</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock profile_content %}

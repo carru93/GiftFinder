@@ -3,7 +3,7 @@
     <div class="w-full items-center px-12">
         <div class="flex justify-between w-full">
             <h1>Forum</h1>
-            <a href="{% url 'forum:create' %}" class="btn btn-primary">Crea un nuovo post</a>
+            <a href="{% url 'forum:create' %}" class="btn btn-primary">Create new post</a>
         </div>
         <ul>
             {% for post in object_list %}

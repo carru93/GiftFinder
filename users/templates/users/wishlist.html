@@ -2,7 +2,7 @@
 {% block profile_content %}
     <div class="flex justify-between w-full">
         <h1>Wishlist</h1>
-        <a href="{% url 'gifts:create' %}" class="btn btn-primary">Crea un nuovo regalo</a>
+        <a href="{% url 'gifts:create' %}" class="btn btn-primary">Create new gift</a>
     </div>
     <ul class="mt-4">
         {% for gift in suggested_gifts %}
