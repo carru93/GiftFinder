@@ -29,11 +29,11 @@
                 <button type="submit">Search</button>
             </form>
         </div>
-        <div class="gift-list">
+        <div class="gift-list w-full flex flex-col gap-2">
             {% for gift in gifts %}
-                <div class="gift-item">
-                    <div class="gift-item-header">
-                        <div class="flex gap-4">
+                <div class="card">
+                    <div class="card-title">
+                        <div class="flex gap-2">
                             {% if gift.image %}
                                 <img src="{{ gift.image.url }}"
                                      alt="{{ gift.name }}"
@@ -49,9 +49,11 @@
                             {% endif %}
                             <div class="gift-item-title">{{ gift.name }}</div>
                         </div>
-                        <div>${{ gift.priceMin }} - ${{ gift.priceMax }}</div>
                     </div>
-                    <div class="gift-item-description">{{ gift.description }}</div>
+                    <div class="card-content">
+                        <div>${{ gift.priceMin }} - ${{ gift.priceMax }}</div>
+                        <div class="gift-item-description">{{ gift.description }}</div>
+                    </div>
                     <div>
                         {% for category in gift.giftCategories.all %}
                             {{ category.name }}

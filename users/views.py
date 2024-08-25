@@ -110,7 +110,6 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(context)
         context["wished_gifts"] = Gift.objects.filter(suggestedBy=self.kwargs["pk"])
         context["is_friend"] = self.request.user.friends.filter(
             id=self.kwargs["pk"]
