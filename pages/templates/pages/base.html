@@ -19,12 +19,19 @@
         <style>{% block style %}
             {%endblock style%}
         </style>
-    </head>
-    <body>
-        {% include "partials/topbar.html" %}
-        <div class="content">
-            {% block content %}
-            {% endblock content %}
-        </div>
-    </body>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+                integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+                crossorigin="anonymous"></script>
+        <link href="{% static 'autocomplete_light/select2.css' %}" rel="stylesheet"></link>
+    <script src="{% static 'autocomplete_light/select2.min.js' %}"></script>
+    <script src="{% static 'autocomplete_light/autocomplete_light.js' %}"></script>
+    {{ form.media }}
+</head>
+<body>
+    {% include "partials/topbar.html" %}
+    <div class="content">
+        {% block content %}
+        {% endblock content %}
+    </div>
+</body>
 </html>

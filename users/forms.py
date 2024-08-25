@@ -1,3 +1,4 @@
+from dal.autocomplete import ModelSelect2Multiple
 from django import forms
 from django.contrib.auth.forms import (
     UserChangeForm as ChangeForm,
@@ -32,6 +33,7 @@ class UserChangeForm(ChangeForm):
             "public_wishlist",
             "hobbies",
         )
+        widgets = {"hobbies": ModelSelect2Multiple(url="hobbies:autocomplete")}
 
 
 class UserSearchForm(forms.Form):
