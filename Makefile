@@ -6,7 +6,7 @@ install:
 	pre-commit install
 
 test:
-	python -m unittest discover -v
+	python3 manage.py test
 
 compile-css:
 	npx tailwindcss -i $(INPUT_CSS) -o $(OUTPUT_CSS)

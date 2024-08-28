@@ -15,15 +15,15 @@ class Post(models.Model):
         return str(self.title)
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    description = models.TextField()
+# class Category(models.Model):
+#     name = models.CharField(max_length=100, unique=True)
+#     description = models.TextField()
 
-    class Meta:
-        verbose_name_plural = "categories"
+#     class Meta:
+#         verbose_name_plural = "categories"
 
-    def __str__(self):
-        return str(self.name)
+#     def __str__(self):
+#         return str(self.name)
 
 
 class Comment(models.Model):
