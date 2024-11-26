@@ -44,7 +44,10 @@ class SearchGiftView(ListView):
                 queryset = queryset.filter(priceMin__gte=price_min)
             if price_max is not None:
                 queryset = queryset.filter(priceMax__lte=price_max)
-
+            if "hobbies" in self.request.GET and self.request.GET.getlist("hobbies"):
+                queryset = queryset.filter(
+                    hobbies__in=self.request.GET.getlist("hobbies")
+                ).distinct()
         return queryset
 
     def get_context_data(self, **kwargs):

@@ -1,4 +1,7 @@
+from dal.autocomplete import ModelSelect2Multiple
 from django import forms
+
+from hobbies.models import Hobby
 
 from .models import Gift, GiftCategory
 
@@ -36,4 +39,10 @@ class GiftSearchForm(forms.Form):
         min_value=0,
         max_digits=10,
         decimal_places=2,
+    )
+    hobbies = forms.ModelMultipleChoiceField(
+        queryset=Hobby.objects.all(),
+        required=False,
+        widget=ModelSelect2Multiple(url="hobbies:autocomplete"),
+        label="Hobbies",
     )

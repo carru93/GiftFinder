@@ -24,9 +24,13 @@
     <div class="flex justify-center flex-col w-full items-center px-12 ">
         <div class="card w-full mt-8 mb-16">
             <div class="card-title">Search for Gifts</div>
-            <form method="get" class="flex p-4 justify-between">
-                <div class="flex justify-around w-full">{{ form.as_p }}</div>
-                <button type="submit">Search</button>
+            <form method="get" class="flex flex-col p-4 gap-4">
+                <div class="flex justify-between w-full">{{ form.as_p }}</div>
+                <div class="flex justify-end">
+                    <button type="submit" class="ng-btn">
+                        <i class="fa-solid fa-magnifying-glass"></i>Search
+                    </button>
+                </div>
             </form>
         </div>
         <div class="gift-list w-full flex flex-col gap-2">
@@ -54,12 +58,14 @@
                         <div>${{ gift.priceMin }} - ${{ gift.priceMax }}</div>
                         <div class="gift-item-description">{{ gift.description }}</div>
                     </div>
-                    <div>
-                        {% for category in gift.giftCategories.all %}
-                            {{ category.name }}
-                            {% if not forloop.last %},{% endif %}
-                        {% endfor %}
-                    </div>
+                    {% if gift.giftCategories.count %}
+                        <div class="card-footer">
+                            {% for category in gift.giftCategories.all %}
+                                <span class="bless-tag">{{ category.name }}</span>
+                                {% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
             {% empty %}
                 <p>No gifts found matching your criteria.</p>
