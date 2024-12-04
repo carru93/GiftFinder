@@ -1,10 +1,13 @@
 <!-- templates/pages/home.html -->
 {% extends "base.html" %}
+{% load static %}
 {% block title %}
     Home - Gift Finder
 {% endblock title %}
 {% block content %}
-    <div class="flex justify-center flex-col w-full items-center px-12 ">
+    <script src="{% static 'src/snow.js' %}"></script>
+    <div class="snow-container"></div>
+    <div class="flex justify-center flex-col w-full items-center px-12">
         <h1 class="text-[72pt] mt-12">Welcome to Gift Finder</h1>
         <p class="tracking-widest">Your ultimate platform for finding the perfect gifts!</p>
         <div class="mt-8 flex gap-8">

@@ -1,19 +1,22 @@
 @import "./components.css";
+@import "./festoon.css";
+@import "./snow.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-    --primary-color: #F6BC00;
-    --primary-color-light: #F6D852;
-    --background-color: #2D3B41;
-    --secondary-color: #FB6A75;
+    --primary-color: #d90429;
+    --primary-color-light: #ef233c;
+    --background-color: #73ba9b;
+    --text-color: #ffffff;
+    --secondary-color: #003e1f;
     --error-color: var(--secondary-color);
-    --third-color: #00C7B7;
+    --third-color: #e9db8a;
     overscroll-behavior: none;
 }
 
 body {
     background-color: var(--background-color);
-    color: var(--primary-color);
+    color: var(--text-color);
 }

@@ -29,6 +29,31 @@ These values will be used for the light theme.
     --select2-highlighted-fg: #fff;
 }
 
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+    display: flex;
+    /* Usa Flexbox per il layout */
+    flex-wrap: wrap;
+    /* Permetti il wrapping su più righe */
+    padding: 0.25em;
+    /* Aggiungi un po' di padding */
+    box-sizing: border-box;
+    /* Assicurati che il box sizing sia corretto */
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    /* Aggiusta il margine tra le opzioni */
+    margin: 0.25em;
+    padding: 2px 5px;
+}
+
+.select2-container--default .select2-selection--multiple {
+    height: auto;
+    /* Imposta l'altezza su auto */
+    min-height: 34px;
+    /* Imposta un'altezza minima se necessario */
+    padding: 0;
+}
+
 @media (prefers-color-scheme: dark) {
     /* For dark theme, use the Django selected row color and the body foreground color for the selected row. */
     .select2-container--default {
@@ -37,16 +62,24 @@ These values will be used for the light theme.
     }
 }
 
+.select2-results__option {
+    /* The options in the dropdown */
+    color: #000;
+    padding: 0 20px;
+}
+
+.select2-selection {
+    height: auto;
+}
+
 .select2-container--default .select2-dropdown {
     /* The dropdown container where choices are displayed */
-    background-color: var(--body-bg, #fff);
-    border-color: var(--border-color, #aaa);
+    background-color: rgb(240, 240, 240, 0.95);
 }
 
 .select2-container--default .select2-selection {
     /* The select field input */
     background-color: var(--body-bg, #fff);
-    border-color: var(--border-color, #aaa);
 }
 
 .select2-container--default .select2-selection .select2-selection__rendered {
@@ -62,7 +95,6 @@ These values will be used for the light theme.
 .select2-container--default .select2-search--dropdown .select2-search__field {
     /* The search input for the choices */
     background-color: var(--darkened-bg, #fff);
-    border-color: var(--border-color, #aaa);
     color: var(--body-fg, #000);
 }
 
@@ -75,13 +107,8 @@ These values will be used for the light theme.
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
     /* Selected choices when multiple are allowed */
     background-color: var(--darkened-bg, #e4e4e4);
-    border-color: var(--border-color, #aaa);
 }
 
 .select2-container--default .select2-search--inline .select2-search__field {
     color: var(--body-fg, #000);
-}
-
-.select2-container--default.select2-container--focus .select2-selection--multiple {
-    border-color: var(--border-color, #000);
 }
