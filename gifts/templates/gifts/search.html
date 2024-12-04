@@ -60,10 +60,7 @@
                     </div>
                     {% if gift.giftCategories.count %}
                         <div class="card-footer">
-                            {% for category in gift.giftCategories.all %}
-                                <span class="bless-tag">{{ category.name }}</span>
-                                {% if not forloop.last %},{% endif %}
-                            {% endfor %}
+                            {% for category in gift.giftCategories.all %}<span class="bless-tag">{{ category.name }}</span>{% endfor %}
                         </div>
                     {% endif %}
                 </div>
