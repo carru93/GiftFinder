@@ -32,6 +32,8 @@ class UserChangeForm(ChangeForm):
             "birth_date",
             "public_wishlist",
             "hobbies",
+            "gender",
+            "location",
         )
         widgets = {"hobbies": ModelSelect2Multiple(url="hobbies:autocomplete")}
 

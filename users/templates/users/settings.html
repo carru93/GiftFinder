@@ -1,6 +1,33 @@
 {% extends "users/profile.html" %}
 {% load crispy_forms_tags %}
 {% load tailwind_filters %}
+{% block style %}
+    {{ block.super }}
+    input {
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 0.25rem;
+    height: 30px;
+    color: var(--background-color);
+    }
+    textarea {
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 0.25rem;
+    color: var(--background-color);
+    }
+    input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
+    outline: none;
+    }
+    select {
+    font-size: 16px;
+    padding: 5px;
+    border-radius: 0.25rem;
+    background-color: #fff;
+    height: 30px;
+    color: var(--background-color);
+    }
+{% endblock style %}
 {% block profile_content %}
     <h2>Settings</h2>
     <div class="container card">

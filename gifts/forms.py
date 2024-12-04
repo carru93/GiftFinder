@@ -46,3 +46,19 @@ class GiftSearchForm(forms.Form):
         widget=ModelSelect2Multiple(url="hobbies:autocomplete"),
         label="Hobbies",
     )
+    age = forms.IntegerField(
+        required=False,
+        label="Age",
+        min_value=0,
+        max_value=120,
+    )
+    gender = forms.ChoiceField(
+        choices=[("", "Qualsiasi")] + Gift.GENDER_CHOICES,
+        required=False,
+        label="Gender",
+    )
+    location = forms.CharField(
+        required=False,
+        label="Location",
+        max_length=100,
+    )
