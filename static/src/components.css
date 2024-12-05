@@ -18,6 +18,7 @@
 
     & .card-footer {
         display: flex;
+        flex-wrap: wrap;
         gap: 1rem;
         padding: 1rem;
         border-top: 1px solid grey;
