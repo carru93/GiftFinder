@@ -1,0 +1,49 @@
+{% extends "users/profile.html" %}
+{% block profile_content %}
+    <h2 class="text-2xl font-bold mb-4">Suggested for You</h2>
+    {% if not request.user.hobbies.exists or not request.user.birth_date or not request.user.gender or not request.user.location %}
+        <p>
+            Please <a href="{% url 'users:settings' %}">complete your profile</a> to receive better gift suggestions.
+        </p>
+    {% endif %}
+    <div class="gift-list w-full flex flex-col gap-2">
+        {% for gift in gifts %}
+            <div class="card">
+                <div class="card-title">
+                    <div class="flex gap-2">
+                        {% if gift.image %}
+                            <img src="{{ gift.image.url }}"
+                                 alt="{{ gift.name }}"
+                                 class="gift-item-image"
+                                 height="75"
+                                 width="75" />
+                        {% else %}
+                            <img src="https://via.placeholder.com/75"
+                                 alt="Default Image"
+                                 class="gift-item-image"
+                                 height="75"
+                                 width="75" />
+                        {% endif %}
+                        <div class="gift-item-title">{{ gift.name }}</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div>${{ gift.priceMin }} - ${{ gift.priceMax }}</div>
+                    <div class="gift-item-description">{{ gift.description }}</div>
+                    <div>
+                        <strong>Age Range:</strong> {{ gift.get_suitable_age_range_display }}
+                        <strong>Gender:</strong> {{ gift.get_suitable_gender_display }}
+                        <strong>Location:</strong> {{ gift.suitable_location }}
+                    </div>
+                </div>
+                {% if gift.giftCategories.count %}
+                    <div class="card-footer">
+                        {% for category in gift.giftCategories.all %}<span class="bless-tag">{{ category.name }}</span>{% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>No suggested gifts found for you at this time.</p>
+        {% endfor %}
+    </div>
+{% endblock profile_content %}

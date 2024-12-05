@@ -9,6 +9,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic import DetailView, ListView, TemplateView, UpdateView
 
 from gifts.models import Gift
+from gifts.views import calculate_age, get_age_range
 
 from .forms import UserChangeForm, UserCreationForm, UserSearchForm
 from .models import User
@@ -115,6 +116,38 @@ class UserDetailView(LoginRequiredMixin, DetailView):
             id=self.kwargs["pk"]
         ).exists()
         return context
+
+
+class SuggestedGiftsView(LoginRequiredMixin, ListView):
+    model = Gift
+    template_name = "users/suggested_gifts.html"
+    context_object_name = "gifts"
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Gift.objects.all()
+
+        queryset = queryset.exclude(suggestedBy=user)
+
+        filters = Q()
+
+        if user.hobbies.exists():
+            filters &= Q(hobbies__in=user.hobbies.all())
+
+        if user.birth_date:
+            age = calculate_age(user.birth_date)
+            age_range = get_age_range(age)
+            filters &= Q(suitable_age_range__in=[age_range])
+
+        if user.gender:
+            filters &= Q(suitable_gender__in=[user.gender, "U"])
+
+        if user.location:
+            filters &= Q(suitable_location__icontains=user.location)
+
+        queryset = queryset.filter(filters).distinct()
+
+        return queryset
 
 
 @require_POST

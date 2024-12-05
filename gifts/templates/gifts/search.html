@@ -38,6 +38,11 @@
                     <div class="card-content">
                         <div>${{ gift.priceMin }} - ${{ gift.priceMax }}</div>
                         <div class="gift-item-description">{{ gift.description }}</div>
+                        <div>
+                            <strong>Age Range:</strong> {{ gift.get_suitable_age_range_display }}
+                            <strong>Gender:</strong> {{ gift.get_suitable_gender_display }}
+                            <strong>Location:</strong> {{ gift.suitable_location }}
+                        </div>
                     </div>
                     {% if gift.giftCategories.count %}
                         <div class="card-footer">

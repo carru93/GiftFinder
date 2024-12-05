@@ -5,6 +5,7 @@ from .views import (
     FriendsSearchView,
     Login,
     ProfileView,
+    SuggestedGiftsView,
     UserDetailView,
     UserUpdateView,
     WishListView,
@@ -26,4 +27,5 @@ urlpatterns = [
     path("profile/friends/search", FriendsSearchView.as_view(), name="search_friends"),
     path("<int:pk>", UserDetailView.as_view(), name="user"),
     path("follow/<int:pk>", toggle_follow_user, name="toggle_follow_user"),
+    path("suggested/", SuggestedGiftsView.as_view(), name="suggested_gifts"),
 ]
