@@ -1,5 +1,9 @@
 module.exports = {
-  content: ["./**/templates/**/*.html"],
+  content: [
+    "./**/templates/**/*.html",
+    "./**/templates/**/*.html",
+    "./**/*.py",
+  ],
   theme: {
     extend: {
       colors: {
@@ -11,5 +15,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };

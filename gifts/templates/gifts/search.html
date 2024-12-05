@@ -1,32 +1,13 @@
 {% extends "base.html" %}
-{% block style %}
-    {{ block.super }}
-    input {
-    padding: 5px;
-    font-size: 16px;
-    border-radius: 0.25rem;
-    height: 30px;
-    color: var(--background-color);
-    }
-    input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
-    outline: none;
-    }
-    select {
-    font-size: 16px;
-    padding: 5px;
-    border-radius: 0.25rem;
-    background-color: #fff;
-    height: 30px;
-    color: var(--background-color);
-    }
-{% endblock style %}
+{% load crispy_forms_tags %}
 {% block content %}
     <div class="flex justify-center flex-col w-full items-center px-12 ">
         <div class="card w-full mt-8 mb-16">
             <div class="card-title">Search for Gifts</div>
-            <form method="get" class="flex flex-col p-4 gap-4">
-                <div class="flex justify-between w-full flex-wrap">{{ form.as_p }}</div>
-                <div class="flex justify-end">
+            <form method="get" class="p-4">
+                {% csrf_token %}
+                {% crispy form %}
+                <div class="flex justify-end mt-4">
                     <button type="submit" class="ng-btn">
                         <i class="fa-solid fa-magnifying-glass"></i>Search
                     </button>

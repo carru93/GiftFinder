@@ -18,17 +18,17 @@ class Gift(models.Model):
     """
 
     AGE_RANGE_CHOICES = [
-        ("0-12", "Bambini (0-12)"),
-        ("13-17", "Adolescenti (13-17)"),
-        ("18-24", "Giovani Adulti (18-24)"),
-        ("25-34", "Adulti (25-34)"),
-        ("35-50", "Adulti (35-50)"),
-        ("50+", "Senior (50+)"),
+        ("0-12", "Children (0-12)"),
+        ("13-17", "Teenagers (13-17)"),
+        ("18-24", "Young Adults (18-24)"),
+        ("25-34", "Adults (25-34)"),
+        ("35-50", "Adults (35-50)"),
+        ("50+", "Seniors (50+)"),
     ]
     GENDER_CHOICES = [
-        ("M", "Maschio"),
-        ("F", "Femmina"),
-        ("O", "Altro"),
+        ("M", "Male"),
+        ("F", "Female"),
+        ("O", "Other"),
         ("U", "Unisex"),
     ]
 
