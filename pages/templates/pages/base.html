@@ -31,7 +31,7 @@
 </head>
 <body>
     {% include "partials/topbar.html" %}
-    <div class="content px-4 py-6">
+    <div class="content {% block content_classes %}px-4 py-6{% endblock content_classes %}">
         {% block content %}
         {% endblock content %}
     </div>

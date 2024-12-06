@@ -2,9 +2,11 @@
 {% block title %}
     Profile - Gift Finder
 {% endblock title %}
+{% block content_classes %}
+{% endblock content_classes %}
 {% block content %}
     <div class="flex">
-        <nav class="w-1/6 text-background bg-primary-light px-5 h-full h-screen sticky top-0">
+        <nav class="w-1/6 text-background bg-primary-light p-5 h-full h-screen sticky top-0">
             <ul>
                 <li class="px-4 py-2 mt-2">
                     <a href="{% url 'users:wishlist' %}">Wishlist</a>
@@ -20,7 +22,7 @@
                 </li>
             </ul>
         </nav>
-        <div class="profile-content p-5 min-h-full w-full">
+        <div class="profile-content px-5 py-10 min-h-full w-full">
             {% block profile_content %}
                 content profile
             {% endblock profile_content %}
