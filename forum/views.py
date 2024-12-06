@@ -1,19 +1,32 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
 
+from .forms import CommentCreateForm, PostCreateForm
 from .models import Comment, Post
 
 
 class ListPosts(ListView):
     model = Post
     template_name = "forum/list.html"
+    context_object_name = "posts"
+
+    def get_queryset(self):
+        queryset = super().get_queryset().order_by("-created_at")
+        query = self.request.GET.get("q")
+
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) | Q(content__icontains=query)
+            ).distinct()
+        return queryset
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ["title", "content"]
+    form_class = PostCreateForm
     template_name = "forum/create.html"
     success_url = reverse_lazy("forum:list")
 
@@ -37,7 +50,7 @@ class PostDetailView(DetailView):
 
 class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
-    fields = ["content"]
+    form_class = CommentCreateForm
     template_name = "forum/create_comment.html"
 
     def form_valid(self, form):

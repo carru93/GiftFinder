@@ -1,22 +1,39 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="w-full items-center px-12">
-        <div class="flex justify-between w-full">
-            <h1>Forum</h1>
-            <a href="{% url 'forum:create' %}" class="btn btn-primary">Create new post</a>
+        <div class="flex flex-wrap justify-between items-center w-full mb-4">
+            <h1 class="text-2xl font-bold">Forum</h1>
+            <div class="flex items-center space-x-4">
+                <form method="get"
+                      action="{% url 'forum:list' %}"
+                      class="flex items-center">
+                    <input type="text"
+                           name="q"
+                           placeholder="Search posts..."
+                           value="{{ request.GET.q|default:'' }}"
+                           class="form-input border rounded px-2 py-1 mr-2">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+                <button type="button"
+                        class="yw-btn"
+                        onclick="window.location.href='{% url 'forum:create' %}'">Create new post</button>
+            </div>
         </div>
-        <ul>
-            {% for post in object_list %}
-                <li>
-                    <div class="card"
-                         onclick='location.href="{% url 'forum:post_detail' post.id %}";'>
-                        <div class="card-title">{{ post.title }}</div>
-                        <div class="card-content">{{ post.content|truncatechars:100 }}</div>
-                    </div>
-                </li>
-            {% empty %}
-                <li>No post found.</li>
-            {% endfor %}
-        </ul>
+        {% if posts %}
+            <ul>
+                {% for post in posts %}
+                    <li class="mb-4">
+                        <div class="card cursor-pointer"
+                             onclick='location.href="{% url 'forum:post_detail' post.id %}";'>
+                            <div class="card-title text-xl font-semibold">{{ post.title }}</div>
+                            <div class="card-content">{{ post.content|truncatechars:100 }}</div>
+                            <div class="text-sm mt-1 p-1">Posted by {{ post.author.username }} on {{ post.created_at|date:"F j, Y, g:i a" }}</div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No posts found.</p>
+        {% endif %}
     </div>
 {% endblock content %}

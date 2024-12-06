@@ -1,20 +1,38 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
-    <h1>{{ post.title }}</h1>
-    <p>{{ post.content }}</p>
-    <p>Posted by {{ post.author }} on {{ post.created_at }}</p>
-    <div class="flex justify-between w-full">
-        <h1>Comments</h1>
-        <a href="{% url 'forum:add_comment' post.id %}" class="btn btn-primary">Add comment</a>
-    </div>
-    {% for comment in comments %}
-        <div>
-            <p>
-                <strong>{{ comment.author }}</strong> said: {{ comment.content }}
-            </p>
-            <p>Posted on {{ comment.created_at }}</p>
+    <div class="flex justify-center w-full items-center px-4">
+        <div class="card w-full max-w-4xl mt-8 mb-16">
+            <!-- Post Details -->
+            <div class="card-title text-2xl font-bold mb-4">{{ post.title }}</div>
+            <div class="card-content">
+                <p class="mb-4 whitespace-pre-line">{{ post.content }}</p>
+                <p class="text-sm text-background">
+                    Posted by <strong>{{ post.author.username }}</strong> on {{ post.created_at|date:"F j, Y, g:i a" }}
+                </p>
+            </div>
+            <hr class="my-6 border-gray-300" />
+            <!-- Comments Header -->
+            <div class="flex justify-between items-center mb-4 px-4">
+                <h2 class="text-xl font-semibold">Comments</h2>
+                <a href="{% url 'forum:add_comment' post.id %}" class="btn btn-primary">Add Comment</a>
+            </div>
+            <!-- Comments List -->
+            {% if comments %}
+                <div class="space-y-4 px-4 mb-4">
+                    {% for comment in comments %}
+                        <div class="bg-white rounded shadow p-4">
+                            <p class="mb-2">
+                                <strong>{{ comment.author.username }}</strong> said:
+                            </p>
+                            <p class="mb-2 text-background whitespace-pre-line">{{ comment.content }}</p>
+                            <p class="text-sm text-gray-500">Posted on {{ comment.created_at|date:"F j, Y, g:i a" }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-background">No comments yet. Be the first to comment!</p>
+            {% endif %}
         </div>
-    {% empty %}
-        <p>No comments yet. Be the first to comment!</p>
-    {% endfor %}
+    </div>
 {% endblock content %}
