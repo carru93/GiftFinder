@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from gifts.models import Gift
+
 
 class User(AbstractUser):
     GENDER_CHOICES = [
@@ -31,6 +33,7 @@ class User(AbstractUser):
     hobbies = models.ManyToManyField("hobbies.Hobby", related_name="users", blank=True)
     friends = models.ManyToManyField("self", blank=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
+    possessed_gifts = models.ManyToManyField(Gift, blank=True, related_name="owners")
 
     def __str__(self):
         return str(self.username)

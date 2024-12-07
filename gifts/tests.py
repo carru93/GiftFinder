@@ -2,6 +2,8 @@ from django.test import TestCase
 from django.test.client import Client
 from django.urls import reverse
 
+from users.models import User
+
 from .models import Gift
 
 
@@ -42,3 +44,34 @@ class SearchGiftViewTests(TestCase):
         response = client.get(reverse("gifts:search") + "?price_min=50")
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<div class="card">', 1)
+
+
+class MarkAsOwnedTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.client = Client()
+        self.client.login(username="testuser", password="testpass")
+
+        self.gift = Gift.objects.create(
+            name="Test Gift", description="A nice test gift", priceMin=10, priceMax=20
+        )
+        self.url = reverse("gifts:mark_as_owned", args=[self.gift.id])
+
+    def test_mark_as_owned(self):
+        self.assertFalse(self.user.possessed_gifts.filter(id=self.gift.id).exists())
+
+        response = self.client.post(self.url, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.possessed_gifts.filter(id=self.gift.id).exists())
+
+    def test_mark_as_owned_twice(self):
+        self.client.post(self.url, follow=True)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.possessed_gifts.filter(id=self.gift.id).exists())
+
+        response = self.client.post(self.url, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(self.user.possessed_gifts.filter(id=self.gift.id).count(), 1)

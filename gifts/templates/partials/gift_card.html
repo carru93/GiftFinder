@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-title">
+    <div class="card-title flex justify-between items-center">
         <div class="flex gap-2">
             {% if gift.image %}
                 <img src="{{ gift.image.url }}"
@@ -14,17 +14,29 @@
                      height="75"
                      width="75" />
             {% endif %}
-            <div class="gift-item-title">{{ gift.name }}</div>
+            <div class="gift-item-title">
+                {{ gift.name }}
+                <div class="flex gap-2 mt-2 text-sm">
+                    {% if gift.suitable_age_range %}<span class="bless-tag">{{ gift.get_suitable_age_range_display }}</span>{% endif %}
+                    {% if gift.suitable_gender %}<span class="bless-tag">{{ gift.get_suitable_gender_display }}</span>{% endif %}
+                    {% if gift.suitable_location %}<span class="bless-tag">{{ gift.suitable_location }}</span>{% endif %}
+                </div>
+            </div>
         </div>
+        {% if user.is_authenticated and gift not in user.possessed_gifts.all %}
+            <div class="text-sm">
+                <form method="post" action="{% url 'gifts:mark_as_owned' gift.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="ng-btn">
+                        <i class="fas fa-check-circle"></i> Owned
+                    </button>
+                </form>
+            </div>
+        {% endif %}
     </div>
     <div class="card-content">
         <div>${{ gift.priceMin }} - ${{ gift.priceMax }}</div>
         <div class="gift-item-description">{{ gift.description }}</div>
-        <div>
-            <strong>Age Range:</strong> {{ gift.get_suitable_age_range_display }}
-            <strong>Gender:</strong> {{ gift.get_suitable_gender_display }}
-            <strong>Location:</strong> {{ gift.suitable_location }}
-        </div>
     </div>
     {% if gift.giftCategories.count %}
         <div class="card-footer">

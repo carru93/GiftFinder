@@ -1,6 +1,9 @@
 from datetime import date
 
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView
 
@@ -118,3 +121,15 @@ class SearchGiftView(ListView):
         context = super().get_context_data(**kwargs)
         context["form"] = GiftSearchForm(self.request.GET or None)
         return context
+
+
+@login_required
+def mark_as_owned(request, pk):
+    gift = get_object_or_404(Gift, pk=pk)
+    user = request.user
+    if gift not in user.possessed_gifts.all():
+        user.possessed_gifts.add(gift)
+        messages.success(request, "Gift marked as owned.")
+    else:
+        messages.info(request, "You already own this gift.")
+    return redirect(request.META.get("HTTP_REFERER", "gifts:search"))

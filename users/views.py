@@ -128,6 +128,9 @@ class SuggestedGiftsView(LoginRequiredMixin, ListView):
         queryset = Gift.objects.all()
 
         queryset = queryset.exclude(suggestedBy=user)
+        queryset = queryset.exclude(
+            id__in=user.possessed_gifts.values_list("id", flat=True)
+        )
 
         filters = Q()
 
