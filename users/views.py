@@ -58,7 +58,7 @@ class WishListView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class UserUpdateView(UpdateView):
+class UserUpdateView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserChangeForm
     template_name = "users/settings.html"
@@ -66,6 +66,10 @@ class UserUpdateView(UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+    def form_valid(self, form):
+        messages.success(self.request, "Your profile has been updated successfully!")
+        return super().form_valid(form)
 
 
 class FriendsListView(LoginRequiredMixin, ListView):

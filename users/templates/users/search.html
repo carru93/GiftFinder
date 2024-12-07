@@ -7,18 +7,13 @@
                    name="filter"
                    placeholder="Search users by name"
                    value="{{ request.GET.filter }}">
-            <button type="submit">Search</button>
+            <button type="submit" class="yw-btn">Search</button>
         </form>
     </div>
     <ul class="mt-4">
         {% for user in users %}
             <li class="mb-4">
-                <div class="card"
-                     onclick='location.href="{% url 'users:user' user.id %}";'>
-                    <div>
-                        <strong>{{ user }}</strong>
-                    </div>
-                </div>
+                <li>{% include "partials/user_card.html" with user=user %}</li>
             </li>
         {% empty %}
             <li>There are no other users at the moment.</li>

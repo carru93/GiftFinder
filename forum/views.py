@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
@@ -32,6 +33,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        messages.success(self.request, "The post has been created!")
         return super().form_valid(form)
 
 
@@ -59,6 +61,8 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
 
         form.instance.author = self.request.user
         form.instance.post = post
+
+        messages.success(self.request, "Comment added!")
 
         return super().form_valid(form)
 

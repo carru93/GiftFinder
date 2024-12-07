@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "compressor",
     "crispy_forms",
     "crispy_tailwind",
+    "django_messages_display",
     "users",
     "hobbies",
     "gifts",
@@ -161,3 +162,5 @@ STATICFILES_FINDERS = (
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 
 CRISPY_TEMPLATE_PACK = "tailwind"
+
+DJANGO_MESSAGES_DISPLAY_CLOSE_BUTTON = True
