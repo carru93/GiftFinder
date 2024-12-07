@@ -5,17 +5,17 @@
         <form method="post" action="{% url 'users:toggle_follow_user' target.id %}">
             {% csrf_token %}
             {% if is_friend %}
-                <button type="submit" class="btn btn-danger">
+                <button type="submit" class="yw-btn">
                     <i class="fa fa-user-minus mr-2"></i>Unfollow
                 </button>
             {% else %}
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="yw-btn">
                     <i class="fa fa-user-plus mr-2"></i>Follow
                 </button>
             {% endif %}
         </form>
     </div>
-    <!-- Card con informazioni utente -->
+    <!-- Info -->
     <div class="card p-4 mb-8">
         <h2 class="text-xl font-semibold mb-2">Profile Information</h2>
         <div class="grid md:grid-cols-2 gap-4">
