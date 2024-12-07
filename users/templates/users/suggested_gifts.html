@@ -2,7 +2,7 @@
 {% block profile_content %}
     <h2 class="text-2xl font-bold mb-4">Suggested for You</h2>
     {% if not request.user.hobbies.exists or not request.user.birth_date or not request.user.gender or not request.user.location %}
-        <p>
+        <p class="hover:underline text-primary">
             Please <a href="{% url 'users:settings' %}">complete your profile</a> to receive better gift suggestions.
         </p>
     {% endif %}
