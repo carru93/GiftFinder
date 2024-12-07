@@ -75,3 +75,55 @@ class MarkAsOwnedTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         self.assertEqual(self.user.possessed_gifts.filter(id=self.gift.id).count(), 1)
+
+
+class GiftEditTest(TestCase):
+    def setUp(self):
+        self.suggester = User.objects.create_user(
+            username="suggester", password="testpass"
+        )
+        self.other_user = User.objects.create_user(
+            username="other", password="testpass2"
+        )
+        self.gift = Gift.objects.create(
+            name="Test Gift",
+            description="A nice test gift",
+            priceMin=10,
+            priceMax=20,
+            suggestedBy=self.suggester,
+        )
+        self.edit_url = reverse("gifts:gift_update", args=[self.gift.id])
+
+    def test_edit_link_visible_for_suggester(self):
+        self.client.login(username="suggester", password="testpass")
+        response = self.client.get(reverse("users:wishlist"))
+        self.assertContains(response, "Edit")
+
+    def test_edit_link_not_visible_for_other_user(self):
+        self.client.login(username="other", password="testpass2")
+        response = self.client.get(reverse("gifts:search"))
+        self.assertNotContains(response, "Edit")
+
+    def test_suggester_can_edit_gift(self):
+        self.client.login(username="suggester", password="testpass")
+        response = self.client.get(self.edit_url)
+        self.assertEqual(response.status_code, 200)
+        response = self.client.post(
+            self.edit_url,
+            {
+                "name": "Updated Name",
+                "description": "Updated Description",
+                "priceMin": 15,
+                "priceMax": 25,
+            },
+            follow=True,
+        )
+        self.assertEqual(response.status_code, 200)
+        self.gift.refresh_from_db()
+        self.assertEqual(self.gift.name, "Updated Name")
+
+    def test_other_user_cannot_edit_gift(self):
+        self.client.login(username="other", password="testpass2")
+        response = self.client.get(self.edit_url)
+        self.assertNotEqual(response.status_code, 200)
+        self.assertTrue(response.status_code in [403, 302])

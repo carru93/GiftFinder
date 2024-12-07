@@ -3,11 +3,12 @@ from datetime import date
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView
 
-from .forms import GiftFormCreate, GiftSearchForm
+from .forms import GiftForm, GiftSearchForm
 from .models import Gift
 
 
@@ -42,9 +43,14 @@ def get_age_range(age):
 
 class GiftCreateView(LoginRequiredMixin, CreateView):
     model = Gift
-    form_class = GiftFormCreate
+    form_class = GiftForm
     template_name = "gifts/create.html"
     success_url = reverse_lazy("users:wishlist")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["submit_text"] = "Create Gift"
+        return kwargs
 
     def form_valid(self, form):
         user = self.request.user
@@ -66,6 +72,24 @@ class GiftCreateView(LoginRequiredMixin, CreateView):
 
         form.instance.save()
         return response
+
+
+class GiftUpdateView(LoginRequiredMixin, UpdateView):
+    model = Gift
+    form_class = GiftForm
+    template_name = "gifts/edit.html"
+    success_url = reverse_lazy("users:wishlist")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["submit_text"] = "Update Gift"
+        return kwargs
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.suggestedBy != request.user:
+            raise PermissionDenied("You are not allowed to edit this gift.")
+        return super().dispatch(request, *args, **kwargs)
 
 
 class SearchGiftView(ListView):

@@ -23,16 +23,21 @@
                 </div>
             </div>
         </div>
-        {% if user.is_authenticated and gift not in user.possessed_gifts.all %}
-            <div class="text-sm">
+        <div class="text-sm flex gap-2">
+            {% if user.is_authenticated and gift not in user.possessed_gifts.all %}
                 <form method="post" action="{% url 'gifts:mark_as_owned' gift.id %}">
                     {% csrf_token %}
                     <button type="submit" class="ng-btn">
                         <i class="fas fa-check-circle"></i> Owned
                     </button>
                 </form>
-            </div>
-        {% endif %}
+            {% endif %}
+            {% if user.is_authenticated and gift.suggestedBy == user %}
+                <a href="{% url 'gifts:gift_update' gift.id %}" class="ng-btn">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+            {% endif %}
+        </div>
     </div>
     <div class="card-content">
         <div>${{ gift.priceMin }} - ${{ gift.priceMax }}</div>

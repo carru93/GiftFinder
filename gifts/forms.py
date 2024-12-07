@@ -8,7 +8,7 @@ from hobbies.models import Hobby
 from .models import Gift, GiftCategory
 
 
-class GiftFormCreate(forms.ModelForm):
+class GiftForm(forms.ModelForm):
     class Meta:
         model = Gift
         fields = [
@@ -37,7 +37,8 @@ class GiftFormCreate(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super(GiftFormCreate, self).__init__(*args, **kwargs)
+        submit_text = kwargs.pop("submit_text", "Submit")
+        super(GiftForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = "post"
         self.helper.label_class = "text-white mb-0"
@@ -63,7 +64,7 @@ class GiftFormCreate(forms.ModelForm):
                     css_class="ng-btn-secondary",
                     onclick="window.history.back()",
                 ),
-                Submit("submit", "Create Gift", css_class="ng-btn"),
+                Submit("submit", submit_text, css_class="ng-btn"),
                 css_class="flex justify-end space-x-2",
             ),
         )
