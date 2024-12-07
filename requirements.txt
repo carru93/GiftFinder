@@ -11,6 +11,7 @@ django-autocomplete-light==3.11.0
 django-compressor==4.5.1
 django-crispy-forms==2.3
 django-extensions==3.2.3
+django-messages-display==0.5.0
 djlint==1.34.1
 EditorConfig==0.12.4
 filelock==3.15.4
