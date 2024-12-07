@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView
 
-from .forms import GiftForm, GiftSearchForm
+from .forms import GiftFormCreate, GiftSearchForm
 from .models import Gift
 
 
@@ -39,7 +39,7 @@ def get_age_range(age):
 
 class GiftCreateView(LoginRequiredMixin, CreateView):
     model = Gift
-    form_class = GiftForm
+    form_class = GiftFormCreate
     template_name = "gifts/create.html"
     success_url = reverse_lazy("users:wishlist")
 

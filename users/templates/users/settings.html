@@ -1,41 +1,11 @@
 {% extends "users/profile.html" %}
 {% load crispy_forms_tags %}
-{% load tailwind_filters %}
-{% block style %}
-    {{ block.super }}
-    input {
-    padding: 5px;
-    font-size: 16px;
-    border-radius: 0.25rem;
-    height: 30px;
-    color: var(--background-color);
-    }
-    textarea {
-    padding: 5px;
-    font-size: 16px;
-    border-radius: 0.25rem;
-    color: var(--background-color);
-    }
-    input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
-    outline: none;
-    }
-    select {
-    font-size: 16px;
-    padding: 5px;
-    border-radius: 0.25rem;
-    background-color: #fff;
-    height: 30px;
-    color: var(--background-color);
-    }
-{% endblock style %}
 {% block profile_content %}
-    <h2>Settings</h2>
+    <h1 class="text-2xl font-bold">Settings</h1>
     <div class="container card">
-        <h2>Update Profile</h2>
-        <form method="post" enctype="multipart/form-data">
+        <div class="card-content">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Update</button>
-        </form>
+            {% crispy form %}
+        </div>
     </div>
 {% endblock profile_content %}

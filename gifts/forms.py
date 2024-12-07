@@ -1,5 +1,5 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Column, Layout, Row
+from crispy_forms.layout import Button, Column, Div, Layout, Row, Submit
 from dal.autocomplete import ModelSelect2Multiple
 from django import forms
 
@@ -8,7 +8,7 @@ from hobbies.models import Hobby
 from .models import Gift, GiftCategory
 
 
-class GiftForm(forms.ModelForm):
+class GiftFormCreate(forms.ModelForm):
     class Meta:
         model = Gift
         fields = [
@@ -19,6 +19,54 @@ class GiftForm(forms.ModelForm):
             "giftCategories",
             "image",
         ]
+        labels = {
+            "name": "Gift Name",
+            "description": "Description",
+            "priceMin": "Minimum Price",
+            "priceMax": "Maximum Price",
+            "giftCategories": "Gift Categories",
+            "image": "Image",
+        }
+        widgets = {
+            "name": forms.TextInput(attrs={"placeholder": "Enter gift name"}),
+            "description": forms.Textarea(
+                attrs={"placeholder": "Enter gift description"}
+            ),
+            "priceMin": forms.NumberInput(attrs={"placeholder": "Enter minimum price"}),
+            "priceMax": forms.NumberInput(attrs={"placeholder": "Enter maximum price"}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(GiftFormCreate, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "post"
+        self.helper.label_class = "text-white mb-0"
+        self.helper.layout = Layout(
+            Row(
+                Column("name", css_class="w-full mb-2 md:w-1/2 px-2 text-primary"),
+                Column("giftCategories", css_class="w-full mb-2 md:w-1/2 px-2"),
+            ),
+            Row(
+                Column("description", css_class="w-full mb-2 px-2"),
+            ),
+            Row(
+                Column("priceMin", css_class="w-full mb-2 md:w-1/2 px-2"),
+                Column("priceMax", css_class="w-full mb-2 md:w-1/2 px-2"),
+            ),
+            Row(
+                Column("image", css_class="w-full mb-2 px-2"),
+            ),
+            Div(
+                Button(
+                    "cancel",
+                    "Cancel",
+                    css_class="ng-btn-secondary",
+                    onclick="window.history.back()",
+                ),
+                Submit("submit", "Create Gift", css_class="ng-btn"),
+                css_class="flex justify-end space-x-2",
+            ),
+        )
 
 
 class GiftSearchForm(forms.Form):
@@ -70,20 +118,21 @@ class GiftSearchForm(forms.Form):
         self.helper = FormHelper()
         self.helper.form_method = "get"
         self.helper.form_tag = False
+        self.helper.label_class = "text-white mb-0"
         self.helper.layout = Layout(
             Row(
                 Column("category", css_class="w-full md:w-1/4 px-2"),
                 Column("price_min", css_class="w-full md:w-1/4 px-2"),
                 Column("price_max", css_class="w-full md:w-1/4 px-2"),
                 Column("age", css_class="w-full md:w-1/4 px-2"),
-                css_class="flex flex-wrap -mx-2",
+                css_class="flex flex-wrap -mx-2 mb-4",
             ),
             Row(
                 Column("gender", css_class="w-full md:w-1/4 px-2"),
                 Column("location", css_class="w-full md:w-1/4 px-2"),
                 Column("hobbies", css_class="w-full md:w-1/4 px-2"),
                 Column(css_class="w-full md:w-1/4 px-2"),
-                css_class="flex flex-wrap -mx-2",
+                css_class="flex flex-wrap -mx-2 mb-4",
             ),
         )
         self.helper.field_template = "tailwind/field.html"

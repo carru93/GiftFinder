@@ -6,19 +6,31 @@
 {% endblock content_classes %}
 {% block content %}
     <div class="flex">
-        <nav class="w-1/6 text-background bg-primary-light p-5 h-full h-screen sticky top-0">
-            <ul>
-                <li class="px-4 py-2 mt-2">
-                    <a href="{% url 'users:wishlist' %}">Wishlist</a>
+        <nav class="w-1/6 bg-primary-light p-5 h-full h-screen sticky top-0">
+            <ul class="space-y-2">
+                <li>
+                    <a href="{% url 'users:wishlist' %}"
+                       class="block px-4 py-2 rounded-md transition-colors hover:bg-primary-dark {% if request.resolver_match.url_name == 'wishlist' %}bg-primary font-semibold{% endif %}">
+                        <i class="fa fa-gift mr-2"></i> Wishlist
+                    </a>
                 </li>
-                <li class="px-4 py-2">
-                    <a href="{% url 'users:friends' %}">Friends</a>
+                <li>
+                    <a href="{% url 'users:friends' %}"
+                       class="block px-4 py-2 rounded-md transition-colors hover:bg-primary-dark {% if request.resolver_match.url_name == 'friends' %}bg-primary font-semibold{% endif %}">
+                        <i class="fa fa-user-friends mr-2"></i> Friends
+                    </a>
                 </li>
-                <li class="px-4 py-2">
-                    <a href="{% url 'users:settings' %}">Settings</a>
+                <li>
+                    <a href="{% url 'users:settings' %}"
+                       class="block px-4 py-2 rounded-md transition-colors hover:bg-primary-dark {% if request.resolver_match.url_name == 'settings' %}bg-primary font-semibold{% endif %}">
+                        <i class="fa fa-cog mr-2"></i> Settings
+                    </a>
                 </li>
-                <li class="px-4 py-2">
-                    <a href="{% url 'users:suggested_gifts' %}">Suggested for You</a>
+                <li>
+                    <a href="{% url 'users:suggested_gifts' %}"
+                       class="block px-4 py-2 rounded-md transition-colors hover:bg-primary-dark {% if request.resolver_match.url_name == 'suggested_gifts' %}bg-primary font-semibold{% endif %}">
+                        <i class="fa fa-lightbulb mr-2"></i> Suggested gifts
+                    </a>
                 </li>
             </ul>
         </nav>

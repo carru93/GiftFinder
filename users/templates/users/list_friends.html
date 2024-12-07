@@ -1,21 +1,29 @@
 {% extends "users/profile.html" %}
 {% block profile_content %}
-    <div class="flex justify-between w-full">
-        <h1>Friends</h1>
-        <a href="{% url 'users:search_friends' %}" class="btn btn-primary">Search friends</a>
+    <div class="flex justify-between items-center w-full mb-4">
+        <h1 class="text-2xl font-bold">Friends</h1>
+        <a href="{% url 'users:search_friends' %}" class="yw-btn">
+            <i class="fa fa-search mr-2"></i>Search friends
+        </a>
     </div>
-    <ul class="mt-4">
+    <ul class="space-y-4">
         {% for friend in friends %}
-            <li class="mb-4">
-                <div class="card"
-                     onclick='location.href="{% url 'users:user' friend.id %}";'>
-                    <div>
-                        <strong>{{ friend }}</strong>
+            <li>
+                <div class="card p-4 cursor-pointer transition-colors hover:bg-primary-light"
+                     onclick='location.href="{% url "users:user" friend.id %}";'>
+                    <div class="flex items-center">
+                        <div class="flex-grow">
+                            <div class="text-xl font-semibold">{{ friend.username }}</div>
+                            {% if friend.bio %}<div class="text-sm mt-1 line-clamp-2">{{ friend.bio|truncatechars:100 }}</div>{% endif %}
+                        </div>
+                        <div class="ml-4">
+                            <i class="fa fa-user-friends"></i>
+                        </div>
                     </div>
                 </div>
             </li>
         {% empty %}
-            <li>No friends yet</li>
+            <p class="text-primary">No friends yet</p>
         {% endfor %}
     </ul>
 {% endblock profile_content %}

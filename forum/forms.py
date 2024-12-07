@@ -22,6 +22,7 @@ class PostCreateForm(forms.ModelForm):
         super(PostCreateForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = "post"
+        self.helper.label_class = "text-white"
         self.helper.layout = Layout(
             Field("title", css_class="form-input mb-4"),
             Field("content", css_class="form-textarea mb-4", rows=10),
@@ -55,6 +56,7 @@ class CommentCreateForm(forms.ModelForm):
         super(CommentCreateForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = "post"
+        self.helper.label_class = "text-white"
         self.helper.layout = Layout(
             Field("content", css_class="form-textarea mb-4", rows=5),
             Div(

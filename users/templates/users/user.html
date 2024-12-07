@@ -1,33 +1,76 @@
 {% extends "users/profile.html" %}
 {% block profile_content %}
-    <div class="flex justify-between w-full">
-        <h1>{{ target }}</h1>
+    <div class="flex justify-between items-center w-full mb-4">
+        <h1 class="text-2xl font-bold">{{ target.username }}</h1>
         <form method="post" action="{% url 'users:toggle_follow_user' target.id %}">
             {% csrf_token %}
             {% if is_friend %}
-                <button type="submit" class="btn btn-danger">Unfollow</button>
+                <button type="submit" class="btn btn-danger">
+                    <i class="fa fa-user-minus mr-2"></i>Unfollow
+                </button>
             {% else %}
-                <button type="submit" class="btn btn-primary">Follow</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-user-plus mr-2"></i>Follow
+                </button>
             {% endif %}
         </form>
     </div>
-    <div class="flex gap-4">
-        {% for hobby in target.hobbies.all %}<div class="tag">{{ hobby }}</div>{% endfor %}
+    <!-- Card con informazioni utente -->
+    <div class="card p-4 mb-8">
+        <h2 class="text-xl font-semibold mb-2">Profile Information</h2>
+        <div class="grid md:grid-cols-2 gap-4">
+            {% if target.bio %}
+                <div>
+                    <strong>Bio:</strong> {{ target.bio }}
+                </div>
+            {% endif %}
+            {% if target.birth_date %}
+                <div>
+                    <strong>Birth Date:</strong> {{ target.birth_date|date:"F j, Y" }}
+                </div>
+            {% endif %}
+            {% if target.location %}
+                <div>
+                    <strong>Location:</strong> {{ target.location }}
+                </div>
+            {% endif %}
+            {% if target.gender %}
+                <div>
+                    <strong>Gender:</strong> {{ target.get_gender_display }}
+                </div>
+            {% endif %}
+        </div>
     </div>
+    <!-- Hobbies -->
+    {% if target.hobbies.all %}
+        <div class="card p-4 mb-8">
+            <h2 class="text-xl font-semibold mb-2">Hobbies</h2>
+            <div class="flex flex-wrap gap-2">
+                {% for hobby in target.hobbies.all %}<span class="bless-tag">{{ hobby }}</span>{% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    <!-- Wishlist -->
     {% if target.public_wishlist %}
-        <ul class="mt-4">
-            {% for gift in wished_gifts %}
-                <li class="mb-4">
-                    <div>
-                        <div>
-                            <strong>{{ gift.name }}</strong>
+        <div class="card p-4">
+            <h2 class="text-xl font-semibold mb-2">Public Wishlist</h2>
+            <ul class="space-y-4 mt-4">
+                {% for gift in wished_gifts %}
+                    <li>
+                        <div class="card p-4">
+                            <div class="text-xl font-semibold">{{ gift.name }}</div>
+                            <div class="mt-1">{{ gift.description }}</div>
+                            {% if gift.priceMin and gift.priceMax %}
+                                <div class="text-sm mt-1">${{ gift.priceMin }} - ${{ gift.priceMax }}</div>
+                            {% endif %}
                         </div>
-                        <span>{{ gift.description }}</span>
-                    </div>
-                </li>
-            {% empty %}
-                <li>No gift wished yet.</li>
-            {% endfor %}
-        </ul>
+                    </li>
+                {% empty %}
+                    <p class="text-primary">No gift wished yet.</p>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <p class="text-primary italic">This user’s wishlist is not public.</p>
     {% endif %}
 {% endblock profile_content %}
