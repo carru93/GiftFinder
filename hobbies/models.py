@@ -2,6 +2,12 @@ from django.db import models
 
 
 class Hobby(models.Model):
+    """
+    Model representing a hobby.
+    Attributes:
+        name (CharField): The name of the hobby.
+    """
+
     name = models.CharField(max_length=255)
 
     class Meta:

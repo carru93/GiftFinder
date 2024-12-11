@@ -5,6 +5,21 @@ from gifts.models import Gift
 
 
 class User(AbstractUser):
+    """
+    User model that extends the AbstractUser model to include additional fields and relationships.
+    Attributes:
+        bio (TextField): A brief biography of the user, optional max 500 characters.
+        location (CharField): The user's location, optional max 30 characters.
+        birth_date (DateField): The user's birth date, optional.
+        groups (ManyToManyField): The groups this user belongs to, related to the auth.Group model.
+        user_permissions (ManyToManyField): Specific permissions for this user, related to the auth.Permission model.
+        public_wishlist (BooleanField): Indicates if the user's wishlist is public, defaults to False.
+        hobbies (ManyToManyField): The user's hobbies, related to the hobbies.Hobby model.
+        friends (ManyToManyField): The user's friends, related to the User model itself.
+        gender (CharField): The user's gender, optional with choices defined in GENDER_CHOICES.
+        possessed_gifts (ManyToManyField): The gifts possessed by the user, related to the Gift model.
+    """
+
     GENDER_CHOICES = [
         ("M", "Male"),
         ("F", "Female"),

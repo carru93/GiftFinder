@@ -5,7 +5,6 @@ from django.db import models
 class Gift(models.Model):
     """
     Represents a gift item.
-
     Attributes:
         name (str): The name of the gift.
         description (str): The description of the gift.
@@ -15,6 +14,9 @@ class Gift(models.Model):
         image (ImageField): The image of the gift.
         suggestedBy (ForeignKey): The user who suggested the gift.
         hobbies (ManyToManyField): The hobbies associated with the gift.
+        suitable_age_range (str): The suitable age range for the gift.
+        suitable_gender (str): The suitable gender for the gift.
+        suitable_location (str): The suitable location for the gift.
     """
 
     AGE_RANGE_CHOICES = [
@@ -53,11 +55,24 @@ class Gift(models.Model):
 
 
 class WishList(models.Model):
+    """
+    Represents a user's wish list.
+    Attributes:
+        user (OneToOneField): A one-to-one relationship to the user who owns the wish list.
+        gifts (ManyToManyField): A many-to-many relationship to the gifts included in the wish list.
+    """
+
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     gifts = models.ManyToManyField(Gift)
 
 
 class GiftCategory(models.Model):
+    """
+    Represents a category of gifts.
+    Attributes:
+        name (str): The name of the category.
+    """
+
     name = models.CharField(max_length=100)
 
     class Meta:
