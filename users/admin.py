@@ -19,10 +19,7 @@ class UserAdmin(admin.ModelAdmin):
         "date_joined",
         "last_login",
     )
-    filter_horizontal = (
-        "hobbies",
-        "friends",
-    )
+    filter_horizontal = ("hobbies", "friends", "possessed_gifts")
 
     fieldsets = (
         (None, {"fields": ("username", "email", "password")}),
@@ -40,5 +37,16 @@ class UserAdmin(admin.ModelAdmin):
             },
         ),
         ("Preferences", {"fields": ("public_wishlist", "hobbies", "friends")}),
+        ("Possessed gifts", {"fields": ("possessed_gifts",)}),
+        (
+            "Permissions",
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                )
+            },
+        ),
         ("Important dates", {"fields": ("last_login", "date_joined")}),
     )
