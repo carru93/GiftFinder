@@ -1,29 +1,6 @@
-{% load compress %}
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta name="description"
-              content="GiftFinder is the app that will finally help you find that gift." />
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Login</title>
-        {% compress css %}
-            <link rel="stylesheet" href="{% static 'src/output.css' %}" />
-        {% endcompress %}
-        <style>
-            input {
-                width: 100%;
-                padding: 0.5rem;
-            }
-
-            .error-div {
-                color: var(--error-color);
-                font-size: 0.8rem;
-            }
-        </style>
-    </head>
-    <body class="flex justify-center items-center align-center h-screen">
+{% extends "base.html" %}
+{% block content %}
+    <div class="flex justify-center items-center align-center h-max mt-24">
         <div class="py-8 px-24 bg-primary text-background rounded w-1/3">
             <h2 class="text-xl mb-6">
                 Login or <a href="{% url 'users:signup' %}" class="underline">Sign up</a>
@@ -40,7 +17,8 @@
                            autocomplete="username"
                            maxlength="150"
                            required=""
-                           id="id_username">
+                           id="id_username"
+                           class="w-full">
                 </div>
                 <div>
                     <div>{{ form.password.label }}</div>
@@ -49,12 +27,13 @@
                            name="password"
                            autocomplete="current-password"
                            required=""
-                           id="id_password">
+                           id="id_password"
+                           class="w-full">
                 </div>
                 <div class="error-div">{{ form.non_field_errors }}</div>
                 {% if next %}<input type="hidden" name="next" value="{{ next }}" />{% endif %}
                 <button type="submit" class="bg-background text-primary p-2 rounded-sm">Login</button>
             </form>
         </div>
-    </body>
-</html>
+    </div>
+{% endblock content %}
