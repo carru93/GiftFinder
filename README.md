@@ -14,7 +14,7 @@ Here there are all the instructions to install, configure, and run the applicati
 - **Gift search** based on age, gender, location, and interests/hobbies.
 - **Public/Private wishlist**: users can make their wishlist public.
 - **Social features**: follow other users to see their interests, wishlists, and hobbies.
-- **Suggested gifts**: the app suggests some gifts that can fit the logged user, it alos avoids suggesting gifts the user already owns.
+- **Suggested gifts**: the app suggests some gifts that can fit the logged user, it also avoids suggesting gifts the user already owns.
 - **Gift creation**: users can suggest and update gifts.
 - **Forum**: users can talk to each other creating and commenting posts.
 
@@ -38,7 +38,7 @@ Here there are all the instructions to install, configure, and run the applicati
 - `hobbies/`: Handles hobbies as a model with autocomplete functionality.
 - `pages/`: Static pages or simple views (e.g., home).
 
-Templates are organized in their respective directories (`pages/templates/pages`, `gifts/templates/gifts`, `forum/templates/forum`) with some partials (`partials/`).
+Templates are organized in their respective directories (`pages/templates/pages`, `gifts/templates/gifts`, `forum/templates/forum`, `users/templates/users`) with some partials (`partials/`).
 
 ## Requirements
 
@@ -53,8 +53,8 @@ Templates are organized in their respective directories (`pages/templates/pages`
 1.  **Clone the repository:**
 
     ```bash
-    git clone <your_repository_url>
-    cd gift_finder
+    git clone git@github.com:carru93/GiftFinder.git
+    cd GiftFinder
     ```
 
 2.  **Create a virtual environment:**
@@ -94,6 +94,12 @@ Templates are organized in their respective directories (`pages/templates/pages`
     ```
 
     This command runs migrations and loads initial data for categories and hobbies.
+
+7. **Start the application locally**
+
+    ```bash
+    make start-dev
+    ```
 
 ## Makefile Commands
 
