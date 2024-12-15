@@ -124,7 +124,6 @@ class SearchGiftView(ListView):
                     hobbies__in=self.request.GET.getlist("hobbies")
                 ).distinct()
             if age is not None:
-                # Filtra i regali adatti alla fascia d'età
                 age_ranges = []
                 if age <= 12:
                     age_ranges.append("0-12")
