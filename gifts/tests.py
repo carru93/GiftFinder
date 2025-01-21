@@ -4,7 +4,7 @@ from django.urls import reverse
 
 from users.models import User
 
-from .models import Gift
+from .models import Gift, Review, ReviewVote
 
 
 def create_gift(name, priceMin=10, priceMax=100):
@@ -127,3 +127,50 @@ class GiftEditTest(TestCase):
         response = self.client.get(self.edit_url)
         self.assertNotEqual(response.status_code, 200)
         self.assertTrue(response.status_code in [403, 302])
+
+
+class ReviewVoteTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.gift = Gift.objects.create(
+            name="Test Gift",
+            description="Just a test gift.",
+            priceMin=10,
+            priceMax=20,
+            average_rating=0.0,
+        )
+        self.review = Review.objects.create(gift=self.gift, author=self.user, rating=5)
+
+    def test_upvote_flow(self):
+        self.assertEqual(self.review.score, 0)
+
+        self.client.login(username="testuser", password="testpass")
+        vote = ReviewVote.objects.create(review=self.review, user=self.user, vote=1)
+
+        self.review.refresh_from_db()
+        self.gift.refresh_from_db()
+
+        self.assertAlmostEqual(self.review.score, 1)
+        self.assertAlmostEqual(float(self.gift.average_rating), 5.0)
+
+        vote.vote = -1
+        vote.save()
+        self.review.refresh_from_db()
+        self.gift.refresh_from_db()
+
+        self.assertAlmostEqual(self.review.score, -1)
+        self.assertAlmostEqual(float(self.gift.average_rating), 5.0)
+
+    def test_multiple_reviews(self):
+        user2 = User.objects.create_user(username="other", password="testpass2")
+        review2 = Review.objects.create(gift=self.gift, author=user2, rating=3)
+
+        ReviewVote.objects.create(review=self.review, user=self.user, vote=1)
+        ReviewVote.objects.create(review=self.review, user=user2, vote=1)
+
+        self.review.refresh_from_db()
+        review2.refresh_from_db()
+        self.gift.refresh_from_db()
+
+        # average_rating = 5*3 + 3*1 / (3+1) = 4.5
+        self.assertAlmostEqual(float(self.gift.average_rating), 4.5)

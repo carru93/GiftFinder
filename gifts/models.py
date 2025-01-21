@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.db.models import Sum
 
 
 class Gift(models.Model):
@@ -49,6 +50,7 @@ class Gift(models.Model):
     )
     suitable_gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
     suitable_location = models.CharField(max_length=100, blank=True)
+    average_rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.00)
 
     def __str__(self):
         return str(self.name)
@@ -80,3 +82,67 @@ class GiftCategory(models.Model):
 
     def __str__(self):
         return str(self.name)
+
+
+class Review(models.Model):
+    """
+    Represents a review of a gift.
+    Attributes:
+        gift (ForeignKey): The gift being reviewed.
+        author (ForeignKey): The user who wrote the review.
+        title (str): The title of the review.
+        content (str): The content of the review.
+        rating (int): The rating given by the user.
+        created_at (DateTimeField): The date and time the review was
+    """
+
+    RATING_CHOICES = [(i, i) for i in range(1, 6)]
+
+    gift = models.ForeignKey(Gift, related_name="reviews", on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255, blank=True)
+    content = models.TextField(blank=True)
+    rating = models.IntegerField(choices=RATING_CHOICES, default=5)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Review {self.id} on {self.gift.name} by {self.author.username}"
+
+    @property
+    def score(self):
+        """upvotes - downvotes"""
+        return ReviewVote.aggregate_sum_by_review(self)
+
+
+class ReviewImage(models.Model):
+    """
+    Represents an image associated with a review.
+    Attributes:
+        review (ForeignKey): The review the image is associated with.
+        image (ImageField): The image file.
+    """
+
+    review = models.ForeignKey(Review, related_name="images", on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="reviews/")
+
+    def __str__(self):
+        return f"Image {self.id} for Review {self.review.id}"
+
+
+class ReviewVote(models.Model):
+    VOTE_CHOICES = ((1, "Upvote"), (-1, "Downvote"))
+    review = models.ForeignKey(Review, related_name="votes", on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    vote = models.IntegerField(choices=VOTE_CHOICES)
+
+    class Meta:
+        unique_together = ("review", "user")
+
+    def __str__(self):
+        return f"Vote {self.vote} by {self.user.username} on Review {self.review.pk}"
+
+    @staticmethod
+    def aggregate_sum_by_review(review):
+        result = ReviewVote.objects.filter(review=review).aggregate(Sum("vote"))
+        total = result["vote__sum"] or 0
+        return total

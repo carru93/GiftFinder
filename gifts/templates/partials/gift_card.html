@@ -1,27 +1,42 @@
 <div class="card">
     <div class="card-title flex justify-between items-center">
         <div class="flex gap-2">
-            {% if gift.image %}
-                <img src="{{ gift.image.url }}"
-                     alt="{{ gift.name }}"
-                     class="gift-item-image"
-                     height="75"
-                     width="75" />
-            {% else %}
-                <img src="https://via.placeholder.com/75"
-                     alt="Default Image"
-                     class="gift-item-image"
-                     height="75"
-                     width="75" />
-            {% endif %}
-            <div class="gift-item-title">
-                {{ gift.name }}
-                <div class="flex gap-2 mt-2 text-sm">
-                    {% if gift.suitable_age_range %}<span class="bless-tag">{{ gift.get_suitable_age_range_display }}</span>{% endif %}
-                    {% if gift.suitable_gender %}<span class="bless-tag">{{ gift.get_suitable_gender_display }}</span>{% endif %}
-                    {% if gift.suitable_location %}<span class="bless-tag">{{ gift.suitable_location }}</span>{% endif %}
+            <a href="{% url 'gifts:detail' gift.id %}"
+               class="flex items-center gap-2">
+                {% if gift.image %}
+                    <img src="{{ gift.image.url }}"
+                         alt="{{ gift.name }}"
+                         class="w-20 h-20 object-cover rounded"
+                         height="75"
+                         width="75" />
+                {% else %}
+                    <img src="https://via.placeholder.com/75"
+                         alt="Default Image"
+                         class="w-20 h-20 object-cover rounded"
+                         height="75"
+                         width="75" />
+                {% endif %}
+                <div class="gift-item-title">
+                    {{ gift.name }}
+                    <div class="flex gap-2 mt-2 text-sm">
+                        {% if gift.suitable_age_range %}<span class="bless-tag">{{ gift.get_suitable_age_range_display }}</span>{% endif %}
+                        {% if gift.suitable_gender %}<span class="bless-tag">{{ gift.get_suitable_gender_display }}</span>{% endif %}
+                        {% if gift.suitable_location %}<span class="bless-tag">{{ gift.suitable_location }}</span>{% endif %}
+                    </div>
+                    <div class="mt-2">
+                        {% with rating=gift.average_rating|floatformat:"1" %}
+                            {% for i in "12345"|make_list %}
+                                {% if i|add:0 <= rating|floatformat:"0"|add:0 %}
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                {% else %}
+                                    <i class="far fa-star text-yellow-400"></i>
+                                {% endif %}
+                            {% endfor %}
+                            <span class="ml-1 text-sm">({{ gift.average_rating }}/5)</span>
+                        {% endwith %}
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
         <div class="text-sm flex gap-2">
             {% if user.is_authenticated and gift not in user.possessed_gifts.all %}

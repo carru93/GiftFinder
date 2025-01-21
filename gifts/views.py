@@ -6,10 +6,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
-from .forms import GiftForm, GiftSearchForm
-from .models import Gift
+from .forms import GiftForm, GiftSearchForm, ReviewForm
+from .models import Gift, Review, ReviewImage, ReviewVote
 
 
 class ListGifts(ListView):
@@ -142,6 +142,7 @@ class SearchGiftView(ListView):
                 queryset = queryset.filter(suitable_gender__in=[gender, "U"])
             if location:
                 queryset = queryset.filter(suitable_location__icontains=location)
+        queryset = queryset.order_by("-average_rating")
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -160,3 +161,91 @@ def mark_as_owned(request, pk):
     else:
         messages.info(request, "You already own this gift.")
     return redirect(request.META.get("HTTP_REFERER", "gifts:search"))
+
+
+class GiftDetailView(DetailView):
+    model = Gift
+    template_name = "gifts/detail.html"
+    context_object_name = "gift"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        gift = self.get_object()
+        context["reviews"] = gift.reviews.order_by("-created_at")
+        context["average_rating"] = gift.average_rating
+        context["review_form"] = ReviewForm()
+        return context
+
+
+class ReviewCreateView(LoginRequiredMixin, CreateView):
+    model = Review
+    form_class = ReviewForm
+    template_name = "gifts/review_form.html"
+
+    def form_valid(self, form):
+        gift_id = self.kwargs["pk"]
+        gift = get_object_or_404(Gift, id=gift_id)
+
+        review = form.save(commit=False)
+        review.gift = gift
+        review.author = self.request.user
+        review.save()
+
+        files = self.request.FILES.getlist("images")
+        for f in files:
+            ReviewImage.objects.create(review=review, image=f)
+
+        messages.success(self.request, "Review added successfully!")
+        return redirect("gifts:detail", pk=gift_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        gift_id = self.kwargs["pk"]
+        gift = get_object_or_404(Gift, id=gift_id)
+        context["gift"] = gift
+        return context
+
+
+@login_required
+def upvote_review(request, review_id):
+    review = get_object_or_404(Review, pk=review_id)
+    try:
+        vote_obj, created = ReviewVote.objects.get_or_create(
+            review=review, user=request.user, defaults={"vote": 1}
+        )
+        if not created:
+            # already voted
+            if vote_obj.vote == 1:
+                vote_obj.delete()
+                messages.info(request, "Removed your upvote.")
+            else:
+                vote_obj.vote = 1
+                vote_obj.save()
+                messages.success(request, "You changed your vote to upvote.")
+        else:
+            messages.success(request, "Review upvoted!")
+    except Exception as e:
+        messages.error(request, f"Error: {e}")
+    return redirect(request.META.get("HTTP_REFERER", "gifts:list"))
+
+
+@login_required
+def downvote_review(request, review_id):
+    review = get_object_or_404(Review, pk=review_id)
+    try:
+        vote_obj, created = ReviewVote.objects.get_or_create(
+            review=review, user=request.user, defaults={"vote": -1}
+        )
+        if not created:
+            if vote_obj.vote == -1:
+                vote_obj.delete()
+                messages.info(request, "Removed your downvote.")
+            else:
+                vote_obj.vote = -1
+                vote_obj.save()
+                messages.success(request, "You changed your vote to downvote.")
+        else:
+            messages.success(request, "Review downvoted!")
+    except Exception as e:
+        messages.error(request, f"Error: {e}")
+    return redirect(request.META.get("HTTP_REFERER", "gifts:list"))

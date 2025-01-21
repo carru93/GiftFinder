@@ -1,0 +1,28 @@
+<div class="border border-primary p-3 mb-2">
+    <div class="flex gap-4">
+        <div class="flex flex-col items-center">
+            <a href="{% url 'gifts:upvote_review' review.id %}"><i class="fas fa-arrow-up text-primary"></i></a>
+            {{ review.score }}
+            <a href="{% url 'gifts:downvote_review' review.id %}"><i class="fas fa-arrow-down text-primary"></i></a>
+        </div>
+        <div>
+            <strong>{{ review.author.username }}</strong>
+            - <span class="text-yellow-500">★ {{ review.rating }}</span>
+            <br>
+            <strong>{{ review.title }}</strong>
+            {% if review.images.all %}
+                <div class="flex space-x-2 mt-2">
+                    {% for img in review.images.all %}
+                        <img src="{{ img.image.url }}"
+                             alt="review image"
+                             class="w-20 h-20 object-cover"
+                             height="75"
+                             width="75" />
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <p>{{ review.content }}</p>
+            <p class="text-sm text-primary">Posted on {{ review.created_at }}</p>
+        </div>
+    </div>
+</div>

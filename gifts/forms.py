@@ -5,7 +5,7 @@ from django import forms
 
 from hobbies.models import Hobby
 
-from .models import Gift, GiftCategory
+from .models import Gift, GiftCategory, Review
 
 
 class GiftForm(forms.ModelForm):
@@ -137,3 +137,50 @@ class GiftSearchForm(forms.Form):
             ),
         )
         self.helper.field_template = "tailwind/field.html"
+
+
+class ReviewForm(forms.ModelForm):
+    images = forms.FileField(
+        required=False,
+        widget=forms.FileInput(attrs={"allow_multiple_selected": True}),
+        label="Review Images",
+    )
+
+    class Meta:
+        model = Review
+        fields = ["title", "content", "rating"]
+        labels = {
+            "title": "Title",
+            "content": "Review",
+            "rating": "Rating (1-5)",
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ReviewForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "post"
+        self.helper.label_class = "text-white mb-0"
+        self.helper.layout = Layout(
+            Row(
+                Column("title", css_class="w-full mb-2 px-2"),
+            ),
+            Row(
+                Column("content", css_class="w-full mb-2 px-2"),
+            ),
+            Row(
+                Column("rating", css_class="w-full mb-2 px-2"),
+            ),
+            Row(
+                Column("images", css_class="w-full mb-2 px-2"),
+            ),
+            Div(
+                Button(
+                    "cancel",
+                    "Cancel",
+                    css_class="ng-btn-secondary",
+                    onclick="window.history.back()",
+                ),
+                Submit("submit", "Submit Review", css_class="ng-btn"),
+                css_class="flex justify-end space-x-2",
+            ),
+        )

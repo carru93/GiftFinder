@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container mx-auto p-4">
+        <div class="card">
+            <div class="card-title">{{ gift.name }}</div>
+            <div class="card-content">
+                <div class="flex gap-4">
+                    <div class="min-w-64">
+                        <img src="{{ gift.image.url }}"
+                             alt="{{ gift.name }}"
+                             class="w-64 h-auto mb-4"
+                             width="256"
+                             height="auto">
+                    </div>
+                    <div>
+                        <p>{{ gift.description }}</p>
+                        <hr class="my-2 h-0.5 border-t-0 bg-neutral-100 dark:bg-white/10" />
+                        <p>
+                            <strong>Price Range:</strong> {{ gift.priceMin }} - {{ gift.priceMax }}
+                        </p>
+                        <p>
+                            <strong>Categories:</strong>
+                            {% for cat in gift.giftCategories.all %}
+                                {{ cat.name }}
+                                {% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                        </p>
+                        <p>
+                            <strong>Average Rating:</strong> {{ average_rating }} / 5
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Reviews -->
+        <h2 class="text-xl font-semibold mt-8 mb-2">Reviews</h2>
+        <div class="mb-4">
+            {% if reviews %}
+                {% for review in reviews %}
+                    {% include "partials/review.html" with review=review %}
+                {% endfor %}
+            {% else %}
+                <p>No reviews yet.</p>
+            {% endif %}
+        </div>
+        <!-- here? -->
+        {% if user.is_authenticated %}
+            <div class="card">
+                <h2 class="card-title">Add a Review</h2>
+                <div class="card-content">
+                    <form action="{% url 'gifts:add_review' gift.id %}"
+                          method="post"
+                          enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% crispy review_form %}
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <p class="text-red-500">You must be logged in to add a review.</p>
+        {% endif %}
+    </div>
+{% endblock content %}
