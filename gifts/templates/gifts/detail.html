@@ -7,11 +7,19 @@
             <div class="card-content">
                 <div class="flex gap-4">
                     <div class="min-w-64">
-                        <img src="{{ gift.image.url }}"
-                             alt="{{ gift.name }}"
-                             class="w-64 h-auto mb-4"
-                             width="256"
-                             height="auto">
+                        {% if gift.image %}
+                            <img src="{{ gift.image.url }}"
+                                 alt="{{ gift.name }}"
+                                 class="w-64 h-auto mb-4"
+                                 width="256"
+                                 height="auto">
+                        {% else %}
+                            <img src="https://via.placeholder.com/256"
+                                 alt="Default Image"
+                                 class="w-64 h-64 object-cover rounded"
+                                 height="256"
+                                 width="256" />
+                        {% endif %}
                     </div>
                     <div>
                         <p>{{ gift.description }}</p>

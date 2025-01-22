@@ -26,6 +26,11 @@ polish:
 init-db:
 	python3 manage.py migrate;\
 	python3 manage.py loaddata giftcategories;\
-	python3 manage.py loaddata hobbies;\
+	python3 manage.py loaddata hobbies;
 
-.PHONY: install test compile-css watch-css clear-css polish start-dev init-db
+seed:
+	@if [ -e db.sqlite3 ]; then rm db.sqlite3; fi;\
+	make init-db;\
+	python3 manage.py random-seeder;
+
+.PHONY: install test compile-css watch-css clear-css polish start-dev init-db seed

@@ -44,11 +44,13 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_tailwind",
     "django_messages_display",
+    "django_seed",
     "users",
     "hobbies",
     "gifts",
     "forum",
     "pages",
+    "management",
 ]
 
 MIDDLEWARE = [
@@ -126,7 +128,7 @@ TIME_ZONE = "UTC"
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
