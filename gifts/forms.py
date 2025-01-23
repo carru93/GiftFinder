@@ -71,6 +71,13 @@ class GiftForm(forms.ModelForm):
 
 
 class GiftSearchForm(forms.Form):
+    ORDER_CHOICES = [
+        ("-average_rating", "Rating (desc)"),
+        ("average_rating", "Rating (asc)"),
+        ("priceMin", "Price Min (asc)"),
+        ("-priceMax", "Price Max (asc)"),
+        ("name", "Alphabetical (A-Z)"),
+    ]
     category = forms.ModelChoiceField(
         queryset=GiftCategory.objects.all(),
         required=False,
@@ -113,6 +120,12 @@ class GiftSearchForm(forms.Form):
         label="Location",
         max_length=100,
     )
+    order_by = forms.ChoiceField(
+        choices=ORDER_CHOICES,
+        required=False,
+        label="",
+        widget=forms.Select(attrs={"onchange": "this.form.submit()"}),
+    )
 
     def __init__(self, *args, **kwargs):
         super(GiftSearchForm, self).__init__(*args, **kwargs)
@@ -136,7 +149,6 @@ class GiftSearchForm(forms.Form):
                 css_class="flex flex-wrap -mx-2 mb-4",
             ),
         )
-        self.helper.field_template = "tailwind/field.html"
 
 
 class ReviewForm(forms.ModelForm):

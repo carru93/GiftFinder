@@ -113,6 +113,7 @@ class SearchGiftView(ListView):
             age = form.cleaned_data.get("age")
             gender = form.cleaned_data.get("gender")
             location = form.cleaned_data.get("location")
+            order_by = form.cleaned_data.get("order_by", "-average_rating")
 
             if category:
                 queryset = queryset.filter(giftCategories=category)
@@ -143,7 +144,8 @@ class SearchGiftView(ListView):
                 queryset = queryset.filter(suitable_gender__in=[gender, "U"])
             if location:
                 queryset = queryset.filter(suitable_location__icontains=location)
-        queryset = queryset.order_by("-average_rating")
+
+            queryset = queryset.order_by(order_by or "-average_rating")
         return queryset
 
     def get_context_data(self, **kwargs):

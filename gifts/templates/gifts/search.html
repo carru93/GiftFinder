@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% load pagination_tags %}
 {% block content %}
     <div class="flex justify-center flex-col w-full items-center px-12 ">
         <div class="card w-full mt-8 mb-16">
             <div class="card-title">Search for Gifts</div>
             <form method="get" class="p-4">
                 {% csrf_token %}
+                <input type="hidden" name="order_by" value="{{ request.GET.order_by }}">
                 {% crispy form %}
                 <div class="flex justify-end mt-4">
                     <button type="submit" class="ng-btn">
@@ -14,7 +16,46 @@
                 </div>
             </form>
         </div>
-        {% include "partials/paginator.html" %}
+        {% if is_paginated %}
+            <div class="relative w-full ">
+                <div class="flex justify-center items-center gap-2 flex-1 w-full h-full">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode|remove_query_param:'page' }}"
+                           class="ng-btn-secondary px-3 py-2 text-sm flex items-center gap-1">
+                            <i class="fa-solid fa-chevron-left hover:text-primary"></i>
+                        </a>
+                    {% endif %}
+                    {% paginator_range page_obj paginator 2 as pages_to_display %}
+                    {% for item in pages_to_display %}
+                        {% if item == "..." %}
+                            <span class="px-2 text-gray-500">...</span>
+                        {% else %}
+                            {% if page_obj.number == item %}
+                                <span class="ng-btn px-3 py-2 text-sm font-semibold cursor-default">{{ item }}</span>
+                            {% else %}
+                                <a href="?page={{ item }}&{{ request.GET.urlencode|remove_query_param:'page' }}"
+                                   class="ng-btn-secondary px-3 py-2 text-sm hover:text-primary">{{ item }}</a>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode|remove_query_param:'page' }}"
+                           class="ng-btn-secondary px-3 py-2 text-sm flex items-center gap-1">
+                            <i class="fa-solid fa-chevron-right hover:text-primary"></i>
+                        </a>
+                    {% endif %}
+                </div>
+                <div class="flex absolute right-0 bottom-[5px]">
+                    <form method="get" class="flex gap-2">
+                        {% csrf_token %}
+                        {% for key, value in request.GET.items %}
+                            {% if key not in 'order_by page' %}<input type="hidden" name="{{ key }}" value="{{ value }}">{% endif %}
+                        {% endfor %}
+                        {{ form.order_by|as_crispy_field }}
+                    </form>
+                </div>
+            </div>
+        {% endif %}
         <hr class="border-primary w-full mb-4" />
         <div class="gift-list w-full flex flex-col gap-2">
             {% for gift in gifts %}
@@ -24,6 +65,34 @@
             {% endfor %}
         </div>
         <hr class="border-primary w-full mt-4" />
-        {% include "partials/paginator.html" %}
+        {% if is_paginated %}
+            <div class="flex justify-center items-center gap-2 flex-1 w-full h-full">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode|remove_query_param:'page' }}"
+                       class="ng-btn-secondary px-3 py-2 text-sm flex items-center gap-1">
+                        <i class="fa-solid fa-chevron-left hover:text-primary"></i>
+                    </a>
+                {% endif %}
+                {% paginator_range page_obj paginator 2 as pages_to_display %}
+                {% for item in pages_to_display %}
+                    {% if item == "..." %}
+                        <span class="px-2 text-gray-500">...</span>
+                    {% else %}
+                        {% if page_obj.number == item %}
+                            <span class="ng-btn px-3 py-2 text-sm font-semibold cursor-default">{{ item }}</span>
+                        {% else %}
+                            <a href="?page={{ item }}&{{ request.GET.urlencode|remove_query_param:'page' }}"
+                               class="ng-btn-secondary px-3 py-2 text-sm hover:text-primary">{{ item }}</a>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode|remove_query_param:'page' }}"
+                       class="ng-btn-secondary px-3 py-2 text-sm flex items-center gap-1">
+                        <i class="fa-solid fa-chevron-right hover:text-primary"></i>
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
     </div>
 {% endblock content %}
