@@ -27,6 +27,7 @@ urlpatterns = [
     path("gifts/", include("gifts.urls")),
     path("hobbies/", include("hobbies.urls")),
     path("forum/", include("forum.urls")),
+    path("chat/", include("chat.urls")),
     path("", include("django.contrib.auth.urls")),
 ]
 

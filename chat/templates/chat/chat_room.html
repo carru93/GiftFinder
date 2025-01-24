@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="container mx-auto p-4 w-2/3">
+        {% include "partials/chat_header.html" %}
+        <div id="chat-log"
+             class="card p-4 h-96 overflow-auto mb-4 bg-primary-light">
+            {% for msg in messages %}
+                {% include "partials/message_card.html" with msg=msg %}
+            {% endfor %}
+        </div>
+        {% include "partials/chat_input.html" %}
+    </div>
+    <script>
+    (function() {
+      const roomName = "{{ room_name }}";
+      const chatLog = document.querySelector("#chat-log");
+      const messageInput = document.querySelector("#chat-message-input");
+      const messageSubmit = document.querySelector("#chat-message-submit");
+
+      const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+      const chatSocket = new WebSocket(
+          protocol + "://" + window.location.host + "/ws/chat/" + roomName + "/"
+      );
+
+      chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const senderId = data.sender_id;
+        const content = data.content;
+        const timestamp = data.timestamp;
+        const userId = "{{ request.user.id }}";
+        const username = "{{ destination_user.username }}";
+
+        let messageHtml = '';
+        if (senderId == userId) {
+          messageHtml = `
+            <div class="flex justify-end mb-2">
+              <div class="bg-primary p-3 rounded-lg">
+                <strong>${username}</strong>: ${content}
+                <span class="block text-[8pt]">${timestamp}</span>
+              </div>
+            </div>
+          `;
+        } else {
+          messageHtml = `
+            <div class="flex justify-start mb-2">
+              <div class="bg-primary p-3 rounded-lg">
+                <strong>${username}</strong>: ${content}
+                <span class="block text-[8pt]">${timestamp}</span>
+              </div>
+            </div>
+          `;
+        }
+        chatLog.insertAdjacentHTML('beforeend', messageHtml);
+        chatLog.scrollTop = chatLog.scrollHeight;
+      };
+
+      chatSocket.onclose = function(e) {
+        console.error("Chat socket closed unexpectedly");
+      };
+
+      messageSubmit.onclick = function(e) {
+        const message = messageInput.value.trim();
+        if (message === "") return;
+        chatSocket.send(JSON.stringify({
+          "message": message
+        }));
+        messageInput.value = "";
+      };
+
+      messageInput.addEventListener("keypress", function(e) {
+        if (e.key === "Enter") {
+          messageSubmit.click();
+        }
+      });
+    })();
+    </script>
+{% endblock content %}

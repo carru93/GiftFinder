@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "dal",
     "dal_select2",
     "django.contrib.admin",
@@ -51,6 +52,8 @@ INSTALLED_APPS = [
     "forum",
     "pages",
     "management",
+    "chat",
+    "channels",
 ]
 
 MIDDLEWARE = [
@@ -72,6 +75,7 @@ TEMPLATES = [
             BASE_DIR / "pages/templates/pages",
             BASE_DIR / "gifts/templates/gifts",
             BASE_DIR / "forum/templates/forum",
+            BASE_DIR / "chat/templates/chat",
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -86,7 +90,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "gift_finder.wsgi.application"
-
+ASGI_APPLICATION = "gift_finder.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -166,3 +170,9 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = "tailwind"
 
 DJANGO_MESSAGES_DISPLAY_CLOSE_BUTTON = True
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    },
+}
