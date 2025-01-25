@@ -1,0 +1,27 @@
+{% if notification.notification_type == 'new_message' %}
+    <a href="{{ notification.content_object.get_chat_url }}"
+       class="block px-4 py-2 hover:bg-primary-light notification-link"
+       data-notification-id="{{ notification.id }}">
+        <div class="flex items-center">
+            <i class="fa fa-envelope mr-2 text-primary"></i>
+            <div>
+                <p class="font-semibold text-secondary">New message from {{ notification.content_object.sender.username }}</p>
+                <p class="text-sm text-gray-600">{{ notification.content_object.content|truncatechars:50 }}</p>
+                <span class="text-xs text-gray-400">{{ notification.timestamp }}</span>
+            </div>
+        </div>
+    </a>
+{% elif notification.notification_type == 'new_gift' %}
+    <a href="{{ notification.content_object.get_absolute_url }}"
+       class="block px-4 py-2 hover:bg-primary-light notification-link"
+       data-notification-id="{{ notification.id }}">
+        <div class="flex items-center">
+            <i class="fa fa-gift mr-2 text-primary"></i>
+            <div>
+                <p class="font-semibold">New gift available: {{ notification.content_object.name }}</p>
+                <p class="text-sm text-gray-600">{{ notification.content_object.description|truncatechars:50 }}</p>
+                <span class="text-xs text-gray-400">{{ notification.timestamp }}</span>
+            </div>
+        </div>
+    </a>
+{% endif %}

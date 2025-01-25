@@ -1,0 +1,92 @@
+<div class="relative px-2">
+    <button id="notifications-button" class="relative focus:outline-none">
+        <i class="fa fa-bell text-white text-xl"></i>
+        {% if unread_count > 0 %}
+            <span class="absolute top-[-10px] right-[-10px] inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none bg-secondary rounded-full badge-notifications">{{ unread_count }}</span>
+        {% endif %}
+    </button>
+    <div id="notifications-dropdown"
+         class="hidden absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-20">
+        <div class="py-2">
+            <h3 class="px-4 py-2 text-lg font-semibold text-secondary">Notifications</h3>
+            <div id="notifications-list" class="max-h-60 overflow-y-auto">
+                {% for notification in notifications %}
+                    {% include "partials/notification_item.html" with notification=notification %}
+                {% empty %}
+                    <p class="px-4 py-2 text-primary">No notifications.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const button = document.getElementById('notifications-button');
+        const dropdown = document.getElementById('notifications-dropdown');
+        const notificationsList = document.getElementById('notifications-list');
+        const unreadBadge = document.querySelector('.badge-notifications');
+
+        button.addEventListener('click', function(event) {
+            dropdown.classList.toggle('hidden');
+        });
+
+        window.addEventListener('click', function(event) {
+            if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+
+        const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+        const notificationsSocket = new WebSocket(
+            protocol + "://" + window.location.host + "/ws/notifications/"
+        );
+
+        notificationsSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const notification = data.notification;
+
+            let notificationHtml = '';
+            if (notification.type === 'new_message') {
+                notificationHtml = `
+                    <a href="${notification.chat_url}" class="block px-4 py-2 hover:bg-primary-light notification-link" data-notification-id="${notification.id}">
+                        <div class="flex items-center">
+                            <i class="fa fa-envelope mr-2 text-primary"></i>
+                            <div>
+                                <p class="font-semibold">New message from ${notification.sender_username}</p>
+                                <p class="text-sm text-gray-600">${notification.message.substring(0, 50)}</p>
+                                <span class="text-xs text-gray-400">${notification.timestamp}</span>
+                            </div>
+                        </div>
+                    </a>
+                `;
+            } else if (notification.type === 'new_gift') {
+                notificationHtml = `
+                    <a href="${notification.gift_url}" class="block px-4 py-2 hover:bg-primary-light notification-link" data-notification-id="${notification.id}">
+                        <div class="flex items-center">
+                            <i class="fa fa-gift mr-2 text-primary"></i>
+                            <div>
+                                <p class="font-semibold">New gift available: ${notification.gift_name}</p>
+                                <p class="text-sm text-gray-600">${notification.gift_description.substring(0, 50)}</p>
+                                <span class="text-xs text-gray-400">${notification.timestamp}</span>
+                            </div>
+                        </div>
+                    </a>
+                `;
+            }
+
+            notificationsList.insertAdjacentHTML('afterbegin', notificationHtml);
+
+            if (unreadBadge) {
+                let count = parseInt(unreadBadge.textContent);
+                count += 1;
+                unreadBadge.textContent = count;
+                unreadBadge.classList.remove('hidden');
+            } else {
+                const newBadge = document.createElement('span');
+                newBadge.classList.add('absolute', 'top-[-10px]', 'right-[-10px]', 'inline-flex', 'items-center', 'justify-center', 'px-2', 'py-1', 'text-xs', 'font-bold', 'leading-none', 'bg-secondary', 'rounded-full', 'badge-notifications');w
+                newBadge.textContent = '1';
+                button.appendChild(newBadge);
+            }
+        };
+    });
+</script>

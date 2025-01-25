@@ -10,6 +10,7 @@ from .views import (
     UserUpdateView,
     WishListView,
     logout_view,
+    mark_notification_as_read,
     register,
     toggle_follow_user,
 )
@@ -28,4 +29,9 @@ urlpatterns = [
     path("<int:pk>", UserDetailView.as_view(), name="user"),
     path("follow/<int:pk>", toggle_follow_user, name="toggle_follow_user"),
     path("suggested/", SuggestedGiftsView.as_view(), name="suggested_gifts"),
+    path(
+        "notifications/mark_as_read/<int:notification_id>/",
+        mark_notification_as_read,
+        name="mark_notification_as_read",
+    ),
 ]

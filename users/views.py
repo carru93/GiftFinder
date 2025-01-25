@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.db.models import Q
@@ -12,7 +13,7 @@ from gifts.models import Gift
 from gifts.views import calculate_age, get_age_range
 
 from .forms import UserChangeForm, UserCreationForm, UserSearchForm
-from .models import User
+from .models import Notification, User
 
 
 class Login(LoginView):
@@ -170,3 +171,24 @@ def toggle_follow_user(request, pk):
         messages.success(request, f"You are now following {target_user.username}.")
 
     return redirect("users:user", pk=pk)
+
+
+@login_required
+def notifications_view(request):
+    notifications = Notification.objects.filter(user=request.user).order_by(
+        "-timestamp"
+    )[:10]
+    unread_count = Notification.objects.filter(user=request.user, is_read=False).count()
+    return render(
+        request,
+        "partials/notifications.html",
+        {"notifications": notifications, "unread_count": unread_count},
+    )
+
+
+@require_POST
+@login_required
+def mark_notification_as_read(request, notification_id):
+    notification = Notification.objects.get(id=notification_id, user=request.user)
+    notification.is_read = True
+    notification.save()

@@ -1,5 +1,8 @@
 from django.contrib.auth.models import AbstractUser
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.utils import timezone
 
 from gifts.models import Gift
 
@@ -52,3 +55,46 @@ class User(AbstractUser):
 
     def __str__(self):
         return str(self.username)
+
+
+# class Search(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="searches")
+#     name = models.CharField(max_length=255)
+#     suitable_age_range = models.CharField(
+#         max_length=50, choices=Gift.SUITABLE_AGE_RANGE_CHOICES
+#     )
+#     suitable_gender = models.CharField(
+#         max_length=50, choices=Gift.SUITABLE_GENDER_CHOICES
+#     )
+#     suitable_location = models.CharField(max_length=255)
+
+#     def __str__(self):
+#         return f"Search {self.name} by {self.user.username}"
+
+#     def get_absolute_url(self):
+#         return reverse('gifts:detail', kwargs={'id': self.id})
+
+
+class Notification(models.Model):
+    NOTIFICATION_TYPES = (
+        ("new_message", "New Message"),
+        ("new_gift", "New Gift Matching Search"),
+    )
+
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="notifications"
+    )
+    notification_type = models.CharField(max_length=50, choices=NOTIFICATION_TYPES)
+    content_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE, null=True, blank=True
+    )
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    content_object = GenericForeignKey("content_type", "object_id")
+    is_read = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ["-timestamp"]
+
+    def __str__(self):
+        return f"Notification for {self.user.username} - {self.notification_type}"

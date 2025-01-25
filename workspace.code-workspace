@@ -1,0 +1,49 @@
+{
+    "folders": [
+        {
+            "name": "Root",
+            "path": "."
+        },
+        {
+            "name": "GiftFinder",
+            "path": "./gift_finder"
+        },
+        {
+            "name": "Gifts",
+            "path": "./gifts"
+        },
+        {
+            "name": "Users",
+            "path": "./users"
+        },
+        {
+            "name": "Chat",
+            "path": "./chat"
+        },
+        {
+            "name": "Forum",
+            "path": "./forum"
+        },
+        {
+            "name": "Hobbies",
+            "path": "./hobbies"
+        },
+        {
+            "name": "Pages",
+            "path": "./pages"
+        }
+    ],
+    "settings": {
+        "files.exclude": {
+            "chat/" : true,
+            "forum/" : true,
+            "gifts/" : true,
+            "users/" : true,
+            "pages/" : true,
+            "hobbies/" : true,
+            "gift_finder/" : true
+        },
+        "pylint.args": ["load-plugins=pylint_django"],
+        "python.analysis.extraPaths": ["../"]
+    }
+}

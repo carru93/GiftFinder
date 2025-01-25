@@ -43,3 +43,32 @@ def _update_gift_average_rating(gift: Gift) -> None:
 
     gift.average_rating = total_weighted_score / total_weight
     gift.save()
+
+
+# @receiver(post_save, sender=Gift)
+# def create_notification_on_new_gift(sender, instance, created, **kwargs):
+#     if created:
+#         matching_searches = Search.objects.filter(
+#             suitable_age_range=instance.suitable_age_range,
+#             suitable_gender=instance.suitable_gender,
+#             suitable_location=instance.suitable_location,
+#         )
+
+#         for search in matching_searches:
+#             Notification.objects.create(
+#                 user=search.user, notification_type="new_gift", content_object=instance
+#             )
+
+#             channel_layer = get_channel_layer()
+#             notification_data = {
+#                 "id": instance.id,
+#                 "type": "new_gift",
+#                 "gift_name": instance.name,
+#                 "gift_id": instance.id,
+#                 "timestamp": instance.timestamp.strftime("%Y-%m-%d %H:%M:%S"),
+#                 "gift_url": reverse("gifts:detail", kwargs={"id": instance.id}),
+#             }
+#             async_to_sync(channel_layer.group_send)(
+#                 f"user_{search.user.id}",
+#                 {"type": "send_notification", "notification": notification_data},
+#             )

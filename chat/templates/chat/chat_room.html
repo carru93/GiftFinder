@@ -5,7 +5,7 @@
         {% include "partials/chat_header.html" %}
         <div id="chat-log"
              class="card p-4 h-96 overflow-auto mb-4 bg-primary-light">
-            {% for msg in messages %}
+            {% for msg in chat_messages %}
                 {% include "partials/message_card.html" with msg=msg %}
             {% endfor %}
         </div>
@@ -53,10 +53,6 @@
         }
         chatLog.insertAdjacentHTML('beforeend', messageHtml);
         chatLog.scrollTop = chatLog.scrollHeight;
-      };
-
-      chatSocket.onclose = function(e) {
-        console.error("Chat socket closed unexpectedly");
       };
 
       messageSubmit.onclick = function(e) {

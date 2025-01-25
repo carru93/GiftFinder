@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 
 
@@ -26,9 +27,13 @@ class Message(models.Model):
         on_delete=models.CASCADE,
         related_name="received_messages",
     )
+    room_name = models.CharField(max_length=255)
     content = models.TextField()
     timestamp = models.DateTimeField(default=timezone.now)
     is_read = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Msg from {self.sender} to {self.receiver} at {self.timestamp}"
+
+    def get_chat_url(self):
+        return reverse("chat:chat_room", kwargs={"pk": self.sender.id})
