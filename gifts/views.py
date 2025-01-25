@@ -3,10 +3,13 @@ from datetime import date
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
+
+from users.models import Notification
 
 from .forms import GiftForm, GiftSearchForm, ReviewForm
 from .models import Gift, Review, ReviewImage, ReviewVote
@@ -178,6 +181,26 @@ class GiftDetailView(DetailView):
         context["average_rating"] = gift.average_rating
         context["review_form"] = ReviewForm()
         return context
+
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+
+        gift = self.get_object()
+
+        if gift.suggestedBy == request.user:
+            review_content_type = ContentType.objects.get_for_model(Review)
+            reviews_in_gift = gift.reviews.values_list("id", flat=True)
+            notifications = Notification.objects.filter(
+                user=request.user,
+                notification_type="new_review",
+                content_type=review_content_type,
+                object_id__in=reviews_in_gift,
+                is_read=False,
+            )
+
+            notifications.update(is_read=True)
+
+        return response
 
 
 class ReviewCreateView(LoginRequiredMixin, CreateView):

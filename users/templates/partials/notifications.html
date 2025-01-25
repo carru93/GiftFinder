@@ -44,6 +44,7 @@
         notificationsSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
             const notification = data.notification;
+            console.log(notification);
 
             let notificationHtml = '';
             if (notification.type === 'new_message') {
@@ -52,8 +53,21 @@
                         <div class="flex items-center">
                             <i class="fa fa-envelope mr-2 text-primary"></i>
                             <div>
-                                <p class="font-semibold">New message from ${notification.sender_username}</p>
+                                <p class="font-semibold text-secondary">New message from ${notification.sender_username}</p>
                                 <p class="text-sm text-gray-600">${notification.message.substring(0, 50)}</p>
+                                <span class="text-xs text-gray-400">${notification.timestamp}</span>
+                            </div>
+                        </div>
+                    </a>
+                `;
+            } else if (notification.type ==='new_review') {
+                notificationHtml = `
+                    <a href="${notification.gift_url}" class="block px-4 py-2 hover:bg-primary-light notification-link" data-notification-id="${notification.id}">
+                        <div class="flex items-center">
+                            <i class="fa fa-gift mr-2 text-primary"></i>
+                            <div>
+                                <p class="font-semibold text-secondary">New review on ${notification.gift_name}</p>
+                                <p class="text-sm text-gray-600">${notification.content.substring(0, 50)}</p>
                                 <span class="text-xs text-gray-400">${notification.timestamp}</span>
                             </div>
                         </div>
@@ -76,6 +90,7 @@
 
             notificationsList.insertAdjacentHTML('afterbegin', notificationHtml);
 
+            console.log(unreadBadge);
             if (unreadBadge) {
                 let count = parseInt(unreadBadge.textContent);
                 count += 1;
@@ -83,7 +98,7 @@
                 unreadBadge.classList.remove('hidden');
             } else {
                 const newBadge = document.createElement('span');
-                newBadge.classList.add('absolute', 'top-[-10px]', 'right-[-10px]', 'inline-flex', 'items-center', 'justify-center', 'px-2', 'py-1', 'text-xs', 'font-bold', 'leading-none', 'bg-secondary', 'rounded-full', 'badge-notifications');w
+                newBadge.classList.add('absolute', 'top-[-10px]', 'right-[-10px]', 'inline-flex', 'items-center', 'justify-center', 'px-2', 'py-1', 'text-xs', 'font-bold', 'leading-none', 'bg-secondary', 'rounded-full', 'badge-notifications');
                 newBadge.textContent = '1';
                 button.appendChild(newBadge);
             }

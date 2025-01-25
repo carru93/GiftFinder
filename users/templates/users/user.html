@@ -64,15 +64,7 @@
             <h2 class="text-xl font-semibold mb-2">Public Wishlist</h2>
             <ul class="space-y-4 mt-4">
                 {% for gift in wished_gifts %}
-                    <li>
-                        <div class="card p-4">
-                            <div class="text-xl font-semibold">{{ gift.name }}</div>
-                            <div class="mt-1">{{ gift.description }}</div>
-                            {% if gift.priceMin and gift.priceMax %}
-                                <div class="text-sm mt-1">${{ gift.priceMin }} - ${{ gift.priceMax }}</div>
-                            {% endif %}
-                        </div>
-                    </li>
+                    {% include "partials/gift_card.html" with gift=gift %}
                 {% empty %}
                     <p class="text-primary">No gift wished yet.</p>
                 {% endfor %}

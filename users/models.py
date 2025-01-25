@@ -79,6 +79,7 @@ class Notification(models.Model):
     NOTIFICATION_TYPES = (
         ("new_message", "New Message"),
         ("new_gift", "New Gift Matching Search"),
+        ("new_review", "New Review"),
     )
 
     user = models.ForeignKey(

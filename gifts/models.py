@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.db.models import Sum
+from django.urls import reverse
 
 
 class Gift(models.Model):
@@ -112,6 +113,9 @@ class Review(models.Model):
     def score(self):
         """upvotes - downvotes"""
         return ReviewVote.aggregate_sum_by_review(self)
+
+    def get_gift_url(self):
+        return reverse("gifts:detail", kwargs={"pk": self.gift.id})
 
 
 class ReviewImage(models.Model):
