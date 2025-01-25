@@ -6,8 +6,12 @@ from .views import (
     GiftUpdateView,
     ListGifts,
     ReviewCreateView,
+    SavedSearchDeleteView,
+    SavedSearchListView,
+    SaveSearchView,
     SearchGiftView,
     downvote_review,
+    execute_saved_search,
     mark_as_owned,
     upvote_review,
 )
@@ -24,4 +28,16 @@ urlpatterns = [
     path("detail/<int:pk>/review/new/", ReviewCreateView.as_view(), name="add_review"),
     path("review/<int:review_id>/upvote/", upvote_review, name="upvote_review"),
     path("review/<int:review_id>/downvote/", downvote_review, name="downvote_review"),
+    path("saved-searches/", SavedSearchListView.as_view(), name="saved_searches"),
+    path("saved-searches/create/", SaveSearchView.as_view(), name="save_search"),
+    path(
+        "saved-searches/delete/<int:pk>/",
+        SavedSearchDeleteView.as_view(),
+        name="delete_saved_search",
+    ),
+    path(
+        "saved-searches/execute/<int:pk>/",
+        execute_saved_search,
+        name="execute_saved_search",
+    ),
 ]

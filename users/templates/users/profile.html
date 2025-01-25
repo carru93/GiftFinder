@@ -32,6 +32,12 @@
                         <i class="fa fa-lightbulb mr-2"></i> Suggested gifts
                     </a>
                 </li>
+                <li>
+                    <a href="{% url 'gifts:saved_searches' %}"
+                       class="block px-4 py-2 rounded-md transition-colors hover:bg-primary-dark {% if request.resolver_match.url_name == 'saved_searches' or request.resolver_match.url_name == 'save_search' %}bg-primary font-semibold{% endif %}">
+                        <i class="fa fa-search mr-2"></i> Searches
+                    </a>
+                </li>
             </ul>
         </nav>
         <div class="profile-content px-5 py-10 min-h-full w-full">

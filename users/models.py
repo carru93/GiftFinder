@@ -57,24 +57,6 @@ class User(AbstractUser):
         return str(self.username)
 
 
-# class Search(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="searches")
-#     name = models.CharField(max_length=255)
-#     suitable_age_range = models.CharField(
-#         max_length=50, choices=Gift.SUITABLE_AGE_RANGE_CHOICES
-#     )
-#     suitable_gender = models.CharField(
-#         max_length=50, choices=Gift.SUITABLE_GENDER_CHOICES
-#     )
-#     suitable_location = models.CharField(max_length=255)
-
-#     def __str__(self):
-#         return f"Search {self.name} by {self.user.username}"
-
-#     def get_absolute_url(self):
-#         return reverse('gifts:detail', kwargs={'id': self.id})
-
-
 class Notification(models.Model):
     NOTIFICATION_TYPES = (
         ("new_message", "New Message"),

@@ -56,6 +56,9 @@ class Gift(models.Model):
     def __str__(self):
         return str(self.name)
 
+    def get_absolute_url(self):
+        return reverse("gifts:detail", kwargs={"pk": self.id})
+
 
 class WishList(models.Model):
     """
@@ -150,3 +153,66 @@ class ReviewVote(models.Model):
         result = ReviewVote.objects.filter(review=review).aggregate(Sum("vote"))
         total = result["vote__sum"] or 0
         return total
+
+
+class SavedSearch(models.Model):
+    """
+    Represents a saved search made by a user.
+    Attributes:
+        user (ForeignKey): The user who saved the search.
+        name (CharField): A name for the saved search.
+        category (ForeignKey): The gift category.
+        price_min (DecimalField): Minimum price.
+        price_max (DecimalField): Maximum price.
+        age (IntegerField): Age for suitable age range.
+        gender (CharField): Suitable gender.
+        location (CharField): Suitable location.
+        hobbies (ManyToManyField): Hobbies associated with the search.
+        order_by (CharField): Ordering criteria.
+        created_at (DateTimeField): Timestamp when the search was saved.
+    """
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="saved_searches",
+    )
+    name = models.CharField(max_length=255)
+    category = models.ForeignKey(
+        "GiftCategory",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="saved_searches",
+    )
+    price_min = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True
+    )
+    price_max = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True
+    )
+    age = models.IntegerField(null=True, blank=True)
+    gender = models.CharField(max_length=1, choices=Gift.GENDER_CHOICES, blank=True)
+    location = models.CharField(max_length=100, blank=True)
+    hobbies = models.ManyToManyField(
+        "hobbies.Hobby", blank=True, related_name="saved_searches"
+    )
+    order_by = models.CharField(
+        max_length=20,
+        choices=[
+            ("-average_rating", "Highest Rating"),
+            ("average_rating", "Lowest Rating"),
+            ("priceMin", "Lowest Price"),
+            ("priceMax", "Highest Price"),
+            ("name", "Name A-Z"),
+            ("-name", "Name Z-A"),
+        ],
+        default="-average_rating",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} by {self.user.username}"
+
+    def get_absolute_url(self):
+        return reverse("gifts:search", kwargs={"saved_search_id": self.id})

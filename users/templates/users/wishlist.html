@@ -4,9 +4,11 @@
         <h1 class="text-2xl font-bold">Wishlist</h1>
         <a href="{% url 'gifts:create' %}" class="yw-btn">Create new gift</a>
     </div>
-    {% for gift in suggested_gifts %}
-        {% include "partials/gift_card.html" with gift=gift %}
-    {% empty %}
-        <p class="text-primary">No gift wished yet.</p>
-    {% endfor %}
+    <div class="gift-list w-full flex flex-col gap-2">
+        {% for gift in suggested_gifts %}
+            {% include "partials/gift_card.html" with gift=gift %}
+        {% empty %}
+            <p class="text-primary">No gift wished yet.</p>
+        {% endfor %}
+    </div>
 {% endblock profile_content %}

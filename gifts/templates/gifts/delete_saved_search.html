@@ -1,0 +1,17 @@
+{% extends "users/profile.html" %}
+{% load crispy_forms_tags %}
+{% block profile_content %}
+    <h1 class="text-2xl font-bold">Delete Search</h1>
+    <div class="container card mx-auto w-1/3">
+        <div class="card-content">
+            <p>Are you sure you want to delete the saved search "{{ object.name }}"?</p>
+            <form method="post" class="mt-4 flex justify-end gap-4">
+                {% csrf_token %}
+                <button class="yw-btn-secondary">
+                    <a href="{% url 'gifts:saved_searches' %}" class="btn btn-secondary">Cancel</a>
+                </button>
+                <button type="submit" class="ng-btn">Delete</button>
+            </form>
+        </div>
+    </div>
+{% endblock profile_content %}

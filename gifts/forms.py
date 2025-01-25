@@ -5,7 +5,7 @@ from django import forms
 
 from hobbies.models import Hobby
 
-from .models import Gift, GiftCategory, Review
+from .models import Gift, GiftCategory, Review, SavedSearch
 
 
 class GiftForm(forms.ModelForm):
@@ -147,6 +147,69 @@ class GiftSearchForm(forms.Form):
                 Column("hobbies", css_class="w-full md:w-1/4 px-2"),
                 Column(css_class="w-full md:w-1/4 px-2"),
                 css_class="flex flex-wrap -mx-2 mb-4",
+            ),
+        )
+
+
+class SavedSearchForm(forms.ModelForm):
+    class Meta:
+        model = SavedSearch
+        fields = [
+            "name",
+            "category",
+            "price_min",
+            "price_max",
+            "age",
+            "gender",
+            "location",
+            "hobbies",
+            "order_by",
+        ]
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control"}),
+            "category": forms.Select(attrs={"class": "form-control"}),
+            "price_min": forms.NumberInput(attrs={"class": "form-control"}),
+            "price_max": forms.NumberInput(attrs={"class": "form-control"}),
+            "age": forms.NumberInput(attrs={"class": "form-control"}),
+            "gender": forms.Select(attrs={"class": "form-control"}),
+            "location": forms.TextInput(attrs={"class": "form-control"}),
+            "hobbies": ModelSelect2Multiple(url="hobbies:autocomplete"),
+            "order_by": forms.Select(attrs={"class": "form-control"}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(SavedSearchForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "post"
+        self.helper.label_class = "text-white mb-0"
+        self.helper.layout = Layout(
+            Row(
+                Column("name", css_class="w-full md:w-1/4 px-2"),
+                Column("order_by", css_class="w-full md:w-1/4 px-2"),
+                css_class="flex flex-wrap -mx-2 mb-4",
+            ),
+            Row(
+                Column("category", css_class="w-full md:w-1/4 px-2"),
+                Column("price_min", css_class="w-full md:w-1/4 px-2"),
+                Column("price_max", css_class="w-full md:w-1/4 px-2"),
+                Column("age", css_class="w-full md:w-1/4 px-2"),
+                css_class="flex flex-wrap -mx-2 mb-4",
+            ),
+            Row(
+                Column("gender", css_class="w-full md:w-1/4 px-2"),
+                Column("location", css_class="w-full md:w-1/4 px-2"),
+                Column("hobbies", css_class="w-full md:w-1/4 px-2"),
+                css_class="flex flex-wrap -mx-2 mb-4",
+            ),
+            Div(
+                Button(
+                    "cancel",
+                    "Cancel",
+                    css_class="ng-btn-secondary",
+                    onclick="window.history.back()",
+                ),
+                Submit("submit", "Save Search", css_class="ng-btn"),
+                css_class="flex justify-end space-x-2",
             ),
         )
 

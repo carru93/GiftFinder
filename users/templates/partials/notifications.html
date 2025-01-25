@@ -44,7 +44,6 @@
         notificationsSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
             const notification = data.notification;
-            console.log(notification);
 
             let notificationHtml = '';
             if (notification.type === 'new_message') {
@@ -79,7 +78,7 @@
                         <div class="flex items-center">
                             <i class="fa fa-gift mr-2 text-primary"></i>
                             <div>
-                                <p class="font-semibold">New gift available: ${notification.gift_name}</p>
+                                <p class="font-semibold text-secondary">New gift available: ${notification.gift_name}</p>
                                 <p class="text-sm text-gray-600">${notification.gift_description.substring(0, 50)}</p>
                                 <span class="text-xs text-gray-400">${notification.timestamp}</span>
                             </div>
@@ -90,7 +89,6 @@
 
             notificationsList.insertAdjacentHTML('afterbegin', notificationHtml);
 
-            console.log(unreadBadge);
             if (unreadBadge) {
                 let count = parseInt(unreadBadge.textContent);
                 count += 1;

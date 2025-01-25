@@ -5,14 +5,21 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
+    View,
+)
 
 from users.models import Notification
 
-from .forms import GiftForm, GiftSearchForm, ReviewForm
-from .models import Gift, Review, ReviewImage, ReviewVote
+from .forms import GiftForm, GiftSearchForm, ReviewForm, SavedSearchForm
+from .models import Gift, Review, ReviewImage, ReviewVote, SavedSearch
 
 
 class ListGifts(ListView):
@@ -154,7 +161,35 @@ class SearchGiftView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = GiftSearchForm(self.request.GET or None)
+
+        if self.request.GET.get("save_search") == "on":
+            context["save_search_form"] = SavedSearchForm(
+                initial={
+                    "name": self.request.GET.get("search_name", "My Search"),
+                    "category": self.request.GET.get("category"),
+                    "price_min": self.request.GET.get("price_min"),
+                    "price_max": self.request.GET.get("price_max"),
+                    "age": self.request.GET.get("age"),
+                    "gender": self.request.GET.get("gender"),
+                    "location": self.request.GET.get("location"),
+                    "order_by": self.request.GET.get("order_by", "-average_rating"),
+                    "hobbies": self.request.GET.getlist("hobbies"),
+                }
+            )
         return context
+
+    def post(self, request, *args, **kwargs):
+        form = SavedSearchForm(request.POST)
+        if form.is_valid():
+            saved_search = form.save(commit=False)
+            saved_search.user = request.user
+            saved_search.save()
+            form.save_m2m()
+            messages.success(request, "Search saved successfully!")
+            return redirect("gifts:saved_searches")
+        else:
+            messages.error(request, "There was an error saving your search.")
+            return redirect("gifts:search")
 
 
 @login_required
@@ -190,15 +225,24 @@ class GiftDetailView(DetailView):
         if gift.suggestedBy == request.user:
             review_content_type = ContentType.objects.get_for_model(Review)
             reviews_in_gift = gift.reviews.values_list("id", flat=True)
-            notifications = Notification.objects.filter(
+            review_notifications_to_toggle = Notification.objects.filter(
                 user=request.user,
                 notification_type="new_review",
                 content_type=review_content_type,
                 object_id__in=reviews_in_gift,
                 is_read=False,
             )
+            review_notifications_to_toggle.update(is_read=True)
 
-            notifications.update(is_read=True)
+        gift_content_type = ContentType.objects.get_for_model(Gift)
+        new_gift_notifications_to_toggle = Notification.objects.filter(
+            user=request.user,
+            notification_type="new_gift",
+            content_type=gift_content_type,
+            object_id=gift.id,
+            is_read=False,
+        )
+        new_gift_notifications_to_toggle.update(is_read=True)
 
         return response
 
@@ -275,3 +319,89 @@ def downvote_review(request, review_id):
     except Exception as e:
         messages.error(request, f"Error: {e}")
     return redirect(request.META.get("HTTP_REFERER", "gifts:list"))
+
+
+class SaveSearchView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        initial_data = {}
+        search_fields = [
+            "category",
+            "price_min",
+            "price_max",
+            "age",
+            "gender",
+            "location",
+            "hobbies",
+            "order_by",
+        ]
+        for field in search_fields:
+            if field == "hobbies":
+                value = request.GET.getlist(field)
+                if value:
+                    initial_data[field] = value
+            else:
+                value = request.GET.get(field)
+                if value:
+                    initial_data[field] = value
+        form = SavedSearchForm(initial=initial_data)
+        return render(request, "gifts/save_search.html", {"form": form})
+
+    def post(self, request, *args, **kwargs):
+        form = SavedSearchForm(request.POST)
+        if form.is_valid():
+            saved_search = form.save(commit=False)
+            saved_search.user = request.user
+            saved_search.save()
+            form.save_m2m()
+            messages.success(request, "Search saved successfully!")
+            return redirect("gifts:saved_searches")
+        else:
+            messages.error(request, "There was an error saving your search.")
+            return render(request, "gifts/save_search.html", {"form": form})
+
+
+class SavedSearchListView(LoginRequiredMixin, ListView):
+    model = SavedSearch
+    template_name = "gifts/saved_searches.html"
+    context_object_name = "saved_searches"
+
+    def get_queryset(self):
+        return SavedSearch.objects.filter(user=self.request.user).order_by(
+            "-created_at"
+        )
+
+
+class SavedSearchDeleteView(LoginRequiredMixin, DeleteView):
+    model = SavedSearch
+    template_name = "gifts/delete_saved_search.html"
+    success_url = reverse_lazy("gifts:saved_searches")
+
+    def get_queryset(self):
+        return SavedSearch.objects.filter(user=self.request.user)
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, "Saved search deleted successfully!")
+        return super().delete(request, *args, **kwargs)
+
+
+@login_required
+def execute_saved_search(request, pk):
+    saved_search = get_object_or_404(SavedSearch, pk=pk, user=request.user)
+    query_params = {
+        "category": saved_search.category.id if saved_search.category else "",
+        "price_min": saved_search.price_min or "",
+        "price_max": saved_search.price_max or "",
+        "age": saved_search.age or "",
+        "gender": saved_search.gender or "",
+        "location": saved_search.location or "",
+        "order_by": saved_search.order_by or "-average_rating",
+    }
+
+    hobbies = saved_search.hobbies.all()
+    if hobbies.exists():
+        query_params["hobbies"] = [h.id for h in hobbies]
+
+    from urllib.parse import urlencode
+
+    encoded_params = urlencode(query_params, doseq=True)
+    return redirect(f"{reverse_lazy('gifts:search')}?{encoded_params}")

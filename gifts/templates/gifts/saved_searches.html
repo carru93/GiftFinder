@@ -1,0 +1,88 @@
+{% extends "users/profile.html" %}
+{% load crispy_forms_tags %}
+{% block profile_content %}
+    <h1 class="text-2xl font-bold">Saved searches</h1>
+    <div class="container">
+        <div class="flex justify-end">
+            <form action="{% url 'gifts:save_search' %}">
+                <button class="yw-btn mb-4" type="submit">
+                    <i class="fa-solid fa-plus"></i>Add Search
+                </button>
+            </form>
+        </div>
+        <table class="min-w-full bg-primary rounded">
+            <thead>
+                <tr>
+                    <th class="py-2">Name</th>
+                    <th class="py-2">Category</th>
+                    <th class="py-2">Price Range</th>
+                    <th class="py-2">Age</th>
+                    <th class="py-2">Gender</th>
+                    <th class="py-2">Location</th>
+                    <th class="py-2">Hobbies</th>
+                    <th class="py-2">Order By</th>
+                    <th class="py-2">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for search in saved_searches %}
+                    <tr>
+                        <td class="border px-4 py-2">{{ search.name }}</td>
+                        <td class="border px-4 py-2">
+                            {% if search.category %}
+                                {{ search.category.name }}
+                            {% else %}
+                                *
+                            {% endif %}
+                        </td>
+                        <td class="border px-4 py-2">
+                            {% if search.price_min and search.price_max %}
+                                ${{ search.price_min }} - ${{ search.price_max }}
+                            {% elif search.price_min %}
+                                ${{ search.price_min }}+
+                            {% elif search.price_max %}
+                                Up to ${{ search.price_max }}
+                            {% else %}
+                                *
+                            {% endif %}
+                        </td>
+                        <td class="border px-4 py-2">
+                            {% if search.age %}
+                                {{ search.age }}
+                            {% else %}
+                                *
+                            {% endif %}
+                        </td>
+                        <td class="border px-4 py-2">{{ search.get_gender_display }}</td>
+                        <td class="border px-4 py-2">{{ search.location|default:"*" }}</td>
+                        <td class="border px-4 py-2">
+                            {% for hobby in search.hobbies.all %}
+                                {{ hobby.name }}
+                                {% if not forloop.last %},{% endif %}
+                            {% empty %}
+                                *
+                            {% endfor %}
+                        </td>
+                        <td class="border px-4 py-2">{{ search.get_order_by_display }}</td>
+                        <td class="border px-4 py-2">
+                            <form action="{% url 'gifts:execute_saved_search' search.pk %}">
+                                <button>
+                                    <i class="fa-solid fa-search"></i> Execute
+                                </button>
+                            </form>
+                            <form action="{% url 'gifts:delete_saved_search' search.pk %}">
+                                <button>
+                                    <i class="fa-solid fa-trash"></i> Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="9" class="text-center py-4">No saved searches found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock profile_content %}

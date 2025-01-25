@@ -5,11 +5,14 @@
     <div class="flex justify-center flex-col w-full items-center px-12 ">
         <div class="card w-full mt-8 mb-16">
             <div class="card-title">Search for Gifts</div>
-            <form method="get" class="p-4">
+            <form method="get" class="p-4" id="search-form">
                 {% csrf_token %}
                 <input type="hidden" name="order_by" value="{{ request.GET.order_by }}">
                 {% crispy form %}
-                <div class="flex justify-end mt-4">
+                <div class="flex justify-end mt-4 gap-4">
+                    <button type="button" id="save-search-btn" class="yw-btn-secondary">
+                        <i class="fa-solid fa-save"></i> Save
+                    </button>
                     <button type="submit" class="ng-btn">
                         <i class="fa-solid fa-magnifying-glass"></i>Search
                     </button>
@@ -95,4 +98,26 @@
             </div>
         {% endif %}
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const saveSearchBtn = document.getElementById('save-search-btn');
+            if (saveSearchBtn) {
+                saveSearchBtn.addEventListener('click', function() {
+                    const form = document.getElementById('search-form');
+                    console.log(form)
+                    const formData = new FormData(form);
+                    const params = new URLSearchParams();
+                    for (const [key, value] of formData.entries()) {
+                        if (Array.isArray(value)) {
+                            value.forEach(val => params.append(key, val));
+                        } else {
+                            params.append(key, value);
+                        }
+                    }
+                    const queryString = params.toString();
+                    window.location.href = `{% url 'gifts:save_search' %}?${queryString}`;
+                });
+            }
+        });
+    </script>
 {% endblock content %}
