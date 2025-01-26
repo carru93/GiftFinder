@@ -30,6 +30,9 @@ class UserChangeForm(forms.ModelForm):
             "bio",
             "birth_date",
             "public_wishlist",
+            "email_new_message",
+            "email_new_gift",
+            "email_new_review",
             "hobbies",
             "gender",
             "location",
@@ -38,6 +41,9 @@ class UserChangeForm(forms.ModelForm):
             "bio": "Bio",
             "birth_date": "Birth Date",
             "public_wishlist": "Public Wishlist",
+            "email_new_message": "Email New Message",
+            "email_new_gift": "Email New Gift",
+            "email_new_review": "Email New Review",
             "hobbies": "Hobbies",
             "gender": "Gender",
             "location": "Location",
@@ -77,6 +83,12 @@ class UserChangeForm(forms.ModelForm):
             Row(
                 Column("gender", css_class="w-full md:w-1/2 px-2"),
                 Column("location", css_class="w-full md:w-1/2 px-2"),
+                css_class="flex flex-wrap mb-2 -mx-2",
+            ),
+            Row(
+                Column("email_new_message", css_class="w-full md:w-1/3 px-2"),
+                Column("email_new_gift", css_class="w-full md:w-1/3 px-2"),
+                Column("email_new_review", css_class="w-full md:w-1/3 px-2"),
                 css_class="flex flex-wrap mb-2 -mx-2",
             ),
             Div(

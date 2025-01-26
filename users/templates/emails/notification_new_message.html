@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="description"
+              content="You have received a new message on Gift Finder.">
+        <title>New Message</title>
+        <style>
+        .button {
+            background-color: #d90429;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 5px;
+        }
+        </style>
+    </head>
+    <body>
+        <p>Hello {{ user.username }},</p>
+        <p>
+            You have received a new message from <strong>{{ sender_username }}</strong>:
+        </p>
+        <p>{{ content }}</p>
+        <p>
+            <a href="{{ chat_url }}" class="button">View Message</a>
+        </p>
+    </body>
+</html>

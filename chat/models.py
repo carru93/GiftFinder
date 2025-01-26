@@ -36,4 +36,4 @@ class Message(models.Model):
         return f"Msg from {self.sender} to {self.receiver} at {self.timestamp}"
 
     def get_chat_url(self):
-        return reverse("chat:chat_room", kwargs={"pk": self.sender.id})
+        return f"{settings.SITE_URL}{reverse("chat:chat_room", kwargs={"pk": self.sender.id})}"

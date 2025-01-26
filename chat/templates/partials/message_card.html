@@ -2,14 +2,14 @@
     <div class="flex justify-end mb-2">
         <div class="bg-primary p-3 rounded-lg">
             <strong>You</strong>: {{ msg.content }}
-            <span class="block text-[8pt]">{{ msg.timestamp }}</span>
+            <span class="block text-[8pt]">{{ msg.timestamp|date:"M j, Y, H:i" }}</span>
         </div>
     </div>
 {% else %}
     <div class="flex justify-start mb-2">
         <div class="bg-primary p-3 rounded-lg">
             <strong>{{ destination_user.username }}</strong>: {{ msg.content }}
-            <span class="block text-[8pt]">{{ msg.timestamp }}</span>
+            <span class="block text-[8pt]">{{ msg.timestamp|date:"M j, Y, H:i" }}</span>
         </div>
     </div>
 {% endif %}

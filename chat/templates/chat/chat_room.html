@@ -31,13 +31,24 @@
         const userId = "{{ request.user.id }}";
         const username = "{{ destination_user.username }}";
 
+        const date = new Date(timestamp);
+        const options = {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        };
+        const formattedTimestamp = date.toLocaleString('en-US', options);
+
         let messageHtml = '';
         if (senderId == userId) {
           messageHtml = `
             <div class="flex justify-end mb-2">
               <div class="bg-primary p-3 rounded-lg">
-                <strong>${username}</strong>: ${content}
-                <span class="block text-[8pt]">${timestamp}</span>
+                <strong>You</strong>: ${content}
+                <span class="block text-[8pt]">${formattedTimestamp}</span>
               </div>
             </div>
           `;
@@ -46,7 +57,7 @@
             <div class="flex justify-start mb-2">
               <div class="bg-primary p-3 rounded-lg">
                 <strong>${username}</strong>: ${content}
-                <span class="block text-[8pt]">${timestamp}</span>
+                <span class="block text-[8pt]">${formattedTimestamp}</span>
               </div>
             </div>
           `;

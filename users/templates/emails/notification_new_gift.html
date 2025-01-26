@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="description"
+              content="Notification for a new gift that matches your search criteria.">
+        <title>New Gift</title>
+        <style>
+        .button {
+            background-color: #d90429;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 5px;
+        }
+        </style>
+    </head>
+    <body>
+        <p>Hello {{ user.username }},</p>
+        <p>A new gift that matches your search criteria is available:</p>
+        <h3>{{ gift_name }}</h3>
+        <p>{{ gift_description }}</p>
+        <p>
+            <a href="{{ gift_url }}" class="button">View Gift</a>
+        </p>
+    </body>
+</html>

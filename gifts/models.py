@@ -57,7 +57,7 @@ class Gift(models.Model):
         return str(self.name)
 
     def get_absolute_url(self):
-        return reverse("gifts:detail", kwargs={"pk": self.id})
+        return f"{settings.SITE_URL}{reverse("gifts:detail", kwargs={"pk": self.id})}"
 
 
 class WishList(models.Model):
@@ -118,7 +118,7 @@ class Review(models.Model):
         return ReviewVote.aggregate_sum_by_review(self)
 
     def get_gift_url(self):
-        return reverse("gifts:detail", kwargs={"pk": self.gift.id})
+        return self.gift.get_absolute_url()
 
 
 class ReviewImage(models.Model):

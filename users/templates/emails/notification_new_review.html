@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="description"
+              content="Notification email for a new review on Gift Finder.">
+        <title>New Review Available</title>
+        <style>
+        .button {
+            background-color: #d90429;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 5px;
+        }
+        </style>
+    </head>
+    <body>
+        <p>Hello {{ user.username }},</p>
+        <p>
+            A new review has been added for <strong>{{ gift_name }}</strong>:
+        </p>
+        <p>{{ review_content }}</p>
+        <p>
+            <a href="{{ gift_url }}" class="button">Read Review</a>
+        </p>
+    </body>
+</html>

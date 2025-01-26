@@ -131,7 +131,7 @@ def notify_saved_searches(sender, instance, created, **kwargs):
                 "gift_name": instance.name,
                 "gift_description": instance.description,
                 "gift_url": reverse("gifts:detail", kwargs={"pk": instance.id}),
-                "timestamp": notification.timestamp.strftime("%Y-%m-%d %H:%M:%S"),
+                "timestamp": notification.timestamp.isoformat(),
             }
             async_to_sync(channel_layer.group_send)(
                 f"user_{search.user.id}",

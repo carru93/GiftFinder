@@ -52,6 +52,9 @@ class User(AbstractUser):
     friends = models.ManyToManyField("self", blank=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
     possessed_gifts = models.ManyToManyField(Gift, blank=True, related_name="owners")
+    email_new_message = models.BooleanField(default=False)
+    email_new_gift = models.BooleanField(default=False)
+    email_new_review = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.username)
