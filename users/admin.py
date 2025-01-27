@@ -15,14 +15,23 @@ class UserAdmin(admin.ModelAdmin):
     )
     search_fields = ("username", "email", "first_name", "last_name", "location")
     list_filter = ("gender", "public_wishlist", "hobbies")
-    readonly_fields = (
-        "date_joined",
-        "last_login",
+    readonly_fields = ("date_joined", "last_login")
+
+    filter_horizontal = (
+        "hobbies",
+        "friends",
+        "possessed_gifts",
+        "groups",
+        "user_permissions",
     )
-    filter_horizontal = ("hobbies", "friends", "possessed_gifts")
 
     fieldsets = (
-        (None, {"fields": ("username", "email", "password")}),
+        (
+            None,
+            {
+                "fields": ("username", "email", "password"),
+            },
+        ),
         (
             "Personal info",
             {
@@ -36,8 +45,25 @@ class UserAdmin(admin.ModelAdmin):
                 )
             },
         ),
-        ("Preferences", {"fields": ("public_wishlist", "hobbies", "friends")}),
-        ("Possessed gifts", {"fields": ("possessed_gifts",)}),
+        (
+            "Preferences",
+            {
+                "fields": (
+                    "public_wishlist",
+                    "hobbies",
+                    "friends",
+                    "email_new_message",
+                    "email_new_gift",
+                    "email_new_review",
+                )
+            },
+        ),
+        (
+            "Possessed gifts",
+            {
+                "fields": ("possessed_gifts",),
+            },
+        ),
         (
             "Permissions",
             {
@@ -45,8 +71,15 @@ class UserAdmin(admin.ModelAdmin):
                     "is_active",
                     "is_staff",
                     "is_superuser",
-                )
+                    "groups",
+                    "user_permissions",
+                ),
             },
         ),
-        ("Important dates", {"fields": ("last_login", "date_joined")}),
+        (
+            "Important dates",
+            {
+                "fields": ("last_login", "date_joined"),
+            },
+        ),
     )

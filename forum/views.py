@@ -3,9 +3,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DeleteView, DetailView, ListView
 
 from .forms import CommentCreateForm, PostCreateForm
+from .mixins import ModeratorRequiredMixin
 from .models import Comment, Post
 
 
@@ -68,3 +69,17 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse("forum:post_detail", kwargs={"pk": self.object.post.id})
+
+
+class PostDeleteView(ModeratorRequiredMixin, DeleteView):
+    model = Post
+    template_name = "forum/post_confirm_delete.html"
+    success_url = reverse_lazy("forum:list")
+
+
+class CommentDeleteView(ModeratorRequiredMixin, DeleteView):
+    model = Comment
+    template_name = "forum/comment_confirm_delete.html"
+
+    def get_success_url(self):
+        return reverse_lazy("forum:post_detail", kwargs={"pk": self.object.post.id})

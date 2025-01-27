@@ -21,6 +21,9 @@ class User(AbstractUser):
         friends (ManyToManyField): The user's friends, related to the User model itself.
         gender (CharField): The user's gender, optional with choices defined in GENDER_CHOICES.
         possessed_gifts (ManyToManyField): The gifts possessed by the user, related to the Gift model.
+        email_new_message (BooleanField): Indicates if the user wants to receive email notifications for new messages.
+        email_new_gift (BooleanField): Indicates if the user wants to receive email notifications for new gift matching searches.
+        email_new_review (BooleanField): Indicates if the user wants to receive email notifications for new reviews.
     """
 
     GENDER_CHOICES = [

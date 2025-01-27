@@ -32,5 +32,6 @@ seed:
 	@if [ -e db.sqlite3 ]; then rm db.sqlite3; fi;\
 	make init-db;\
 	python3 manage.py random-seeder;
+	python manage.py setup_moderators_group;
 
 .PHONY: install test compile-css watch-css clear-css polish start-dev init-db seed
