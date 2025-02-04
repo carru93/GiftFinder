@@ -11,6 +11,7 @@
         </form>
     </div>
     <ul class="mt-4">
+        {% include "partials/pagination.html" %}
         {% for user in users %}
             <li class="mb-4">
                 <li>{% include "partials/user_card.html" with user=user %}</li>
@@ -18,5 +19,6 @@
         {% empty %}
             <li>There are no other users at the moment.</li>
         {% endfor %}
+        {% include "partials/pagination.html" %}
     </ul>
 {% endblock profile_content %}

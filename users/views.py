@@ -86,6 +86,7 @@ class FriendsSearchView(LoginRequiredMixin, ListView):
     model = User
     template_name = "users/search.html"
     context_object_name = "users"
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -101,6 +102,8 @@ class FriendsSearchView(LoginRequiredMixin, ListView):
                 | Q(last_name__icontains=search_term)
                 | Q(email__icontains=search_term)
             )
+
+        queryset = queryset.order_by("username")
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -127,6 +130,7 @@ class SuggestedGiftsView(LoginRequiredMixin, ListView):
     model = Gift
     template_name = "users/suggested_gifts.html"
     context_object_name = "gifts"
+    paginate_by = 10
 
     def get_queryset(self):
         user = self.request.user
@@ -154,6 +158,7 @@ class SuggestedGiftsView(LoginRequiredMixin, ListView):
             filters &= Q(suitable_location__icontains=user.location)
 
         queryset = queryset.filter(filters).distinct()
+        queryset = queryset.order_by("-average_rating")
 
         return queryset
 

@@ -7,10 +7,12 @@
         </p>
     {% endif %}
     <div class="gift-list w-full flex flex-col gap-2">
+        {% include "partials/pagination.html" %}
         {% for gift in gifts %}
             {% include "partials/gift_card.html" with gift=gift %}
         {% empty %}
             <p>No suggested gifts found for you at this time.</p>
         {% endfor %}
+        {% include "partials/pagination.html" %}
     </div>
 {% endblock profile_content %}

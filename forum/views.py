@@ -14,6 +14,7 @@ class ListPosts(ListView):
     model = Post
     template_name = "forum/list.html"
     context_object_name = "posts"
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = super().get_queryset().order_by("-created_at")
