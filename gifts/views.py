@@ -256,6 +256,11 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
         gift_id = self.kwargs["pk"]
         gift = get_object_or_404(Gift, id=gift_id)
 
+        existing_review = Review.objects.filter(gift=gift, author=self.request.user)
+        if existing_review.exists():
+            messages.error(self.request, "You have already reviewed this gift.")
+            return redirect("gifts:detail", pk=gift_id)
+
         review = form.save(commit=False)
         review.gift = gift
         review.author = self.request.user
@@ -302,6 +307,11 @@ def upvote_review(request, review_id):
 @login_required
 def downvote_review(request, review_id):
     review = get_object_or_404(Review, pk=review_id)
+
+    if review.author == request.user:
+        messages.error(request, "You cannot downvote your own review.")
+        return redirect(request.META.get("HTTP_REFERER", "gifts:list"))
+
     try:
         vote_obj, created = ReviewVote.objects.get_or_create(
             review=review, user=request.user, defaults={"vote": -1}
