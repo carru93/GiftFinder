@@ -14,29 +14,30 @@ from .views import get_age_range
 def update_after_review_change(sender, instance, created, **kwargs):
     if created:
         receiver = instance.gift.suggestedBy
-        Notification.objects.create(
-            user=receiver, notification_type="new_review", content_object=instance
-        )
-        channel_layer = get_channel_layer()
-        notification_data = {
-            "id": instance.id,
-            "type": "new_review",
-            "review_title": instance.title,
-            "review_content": instance.content,
-            "author_username": instance.author.username,
-            "gift_id": instance.gift.id,
-            "gift_name": instance.gift.name,
-            "gift_url": instance.get_gift_url(),
-            "content": instance.content,
-            "timestamp": instance.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-        }
-        async_to_sync(channel_layer.group_send)(
-            f"user_{receiver.id}",
-            {
-                "type": "send_notification",
-                "notification": notification_data,
-            },
-        )
+        if receiver is None:
+            Notification.objects.create(
+                user=receiver, notification_type="new_review", content_object=instance
+            )
+            channel_layer = get_channel_layer()
+            notification_data = {
+                "id": instance.id,
+                "type": "new_review",
+                "review_title": instance.title,
+                "review_content": instance.content,
+                "author_username": instance.author.username,
+                "gift_id": instance.gift.id,
+                "gift_name": instance.gift.name,
+                "gift_url": instance.get_gift_url(),
+                "content": instance.content,
+                "timestamp": instance.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            }
+            async_to_sync(channel_layer.group_send)(
+                f"user_{receiver.id}",
+                {
+                    "type": "send_notification",
+                    "notification": notification_data,
+                },
+            )
 
     gift = instance.gift
     _update_gift_average_rating(gift)

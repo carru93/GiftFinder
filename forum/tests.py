@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Group
 from django.contrib.messages import get_messages
 from django.test import Client, TestCase
 from django.urls import reverse
@@ -143,3 +144,62 @@ class ForumTests(TestCase):
         data = {"title": "UI Test Post", "content": "UI content"}
         response = self.client.post(url, data, follow=True)
         self.assertContains(response, "The post has been created!")
+
+
+class ForumPermissionsTests(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.other_user = User.objects.create_user(
+            username="otheruser", password="testpass2"
+        )
+        self.post1 = Post.objects.create(
+            title="First Post", content="Content of the first post", author=self.user
+        )
+        self.comment1 = Comment.objects.create(
+            content="First comment",
+            post=self.post1,
+            author=self.other_user,
+        )
+
+        self.mod_user = User.objects.create_user(username="moduser", password="modpass")
+        moderators_group = Group.objects.create(name="Moderators")
+        moderators_group.customuser_set.add(self.mod_user)
+
+        self.client = Client()
+
+    # --- Post DELETE tests ---
+
+    def test_post_delete_by_non_moderator(self):
+        self.client.login(username="testuser", password="testpass")
+        url = reverse("forum:post_delete", args=[self.post1.id])
+        response = self.client.post(url, follow=True)
+
+        self.assertTrue(Post.objects.filter(id=self.post1.id).exists())
+        self.assertEqual(response.status_code, 403)
+
+    def test_post_delete_by_moderator(self):
+        self.client.login(username="moduser", password="modpass")
+        url = reverse("forum:post_delete", args=[self.post1.id])
+        response = self.client.post(url, follow=True)
+
+        self.assertFalse(Post.objects.filter(id=self.post1.id).exists())
+        self.assertIn(response.status_code, [200, 302])
+
+    # --- Comment DELETE tests ---
+
+    def test_comment_delete_by_non_moderator(self):
+        self.client.login(username="testuser", password="testpass")
+        url = reverse("forum:comment_delete", args=[self.comment1.id])
+        response = self.client.post(url, follow=True)
+
+        self.assertTrue(Comment.objects.filter(id=self.comment1.id).exists())
+        self.assertEqual(response.status_code, 403)
+
+    def test_comment_delete_by_moderator(self):
+        self.client.login(username="moduser", password="modpass")
+        url = reverse("forum:comment_delete", args=[self.comment1.id])
+        response = self.client.post(url, follow=True)
+
+        self.assertFalse(Comment.objects.filter(id=self.comment1.id).exists())
+        self.assertIn(response.status_code, [200, 302])
