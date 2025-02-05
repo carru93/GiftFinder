@@ -284,6 +284,11 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
 @login_required
 def upvote_review(request, review_id):
     review = get_object_or_404(Review, pk=review_id)
+
+    if review.author == request.user:
+        messages.error(request, "You cannot upvote your own review.")
+        return redirect(request.META.get("HTTP_REFERER", "gifts:list"))
+
     try:
         vote_obj, created = ReviewVote.objects.get_or_create(
             review=review, user=request.user, defaults={"vote": 1}
