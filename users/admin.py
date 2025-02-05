@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import User
+from .models import Notification, User
 
 
 @admin.register(User)
@@ -80,6 +80,48 @@ class UserAdmin(admin.ModelAdmin):
             "Important dates",
             {
                 "fields": ("last_login", "date_joined"),
+            },
+        ),
+    )
+
+
+@admin.register(Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    """
+    Gestisce le notifiche in admin, permettendo di ricercarle e filtrare
+    per tipo, stato di lettura, e data di creazione.
+    """
+
+    list_display = (
+        "id",
+        "user",
+        "notification_type",
+        "is_read",
+        "timestamp",
+        "content_object",
+    )
+    list_filter = (
+        "notification_type",
+        "is_read",
+        "timestamp",
+    )
+    search_fields = ("user__username",)
+    date_hierarchy = "timestamp"
+    readonly_fields = ("timestamp",)
+
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "user",
+                    "notification_type",
+                    "content_type",
+                    "object_id",
+                    "content_object",
+                    "is_read",
+                    "timestamp",
+                )
             },
         ),
     )
