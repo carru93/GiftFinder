@@ -6,6 +6,7 @@ from django import forms
 from hobbies.models import Hobby
 
 from .models import Gift, GiftCategory, Review, SavedSearch
+from .widgets import MultipleFileField
 
 
 class GiftForm(forms.ModelForm):
@@ -215,11 +216,7 @@ class SavedSearchForm(forms.ModelForm):
 
 
 class ReviewForm(forms.ModelForm):
-    images = forms.FileField(
-        required=False,
-        widget=forms.FileInput(attrs={"allow_multiple_selected": True}),
-        label="Review Images",
-    )
+    images = MultipleFileField(required=False, label="Images")
 
     class Meta:
         model = Review
