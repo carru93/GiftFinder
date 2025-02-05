@@ -80,6 +80,11 @@
           messageSubmit.click();
         }
       });
+
+      document.addEventListener("DOMContentLoaded", function() {
+          const chatLog = document.querySelector("#chat-log");
+          chatLog.scrollTop = chatLog.scrollHeight;
+      });
     })();
     </script>
 {% endblock content %}
